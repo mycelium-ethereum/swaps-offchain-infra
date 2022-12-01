@@ -1,0 +1,6 @@
+[submodule "swaps-keepers"]
+	path = swaps-keepers
+	url = https://github.com/mycelium-ethereum/swaps-keepers.git
+[submodule "swaps-prices"]
+	path = swaps-prices
+	url = https://github.com/mycelium-ethereum/swaps-prices.git
