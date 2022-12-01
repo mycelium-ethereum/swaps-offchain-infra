@@ -1,4 +1,5 @@
-import { KnownToken, ParsedTokenPrice, ethersCalcMedian as calcMedian } from "@mycelium-ethereum/swaps-keepers/src";
+import { ParsedTokenPrice } from "@mycelium-ethereum/swaps-keepers/src";
+import { KnownToken, calcMedian } from '@mycelium-ethereum/swaps-js';
 import { ethers } from "ethers";
 import { broadcast } from "./swapsSocket";
 

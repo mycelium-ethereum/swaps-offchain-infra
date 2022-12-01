@@ -1,6 +1,6 @@
 import { ethers } from 'ethers';
+import { KnownToken } from '@mycelium-ethereum/swaps-js'
 import { WebsocketClient } from '../src/entities/SocketClient';
-import { KnownToken } from '../src/types';
 import { BinanceUpdateMessage, BitfinexSubscriptionMessage, BitfinexUpdateMessage, CoinbaseUpdateMessage, CryptoComUpdateMessage, FTXUpdateMessage, WsKey } from '../src/types/websockets';
 // import { WS } from 'jest-websocket-mock';
 // import { createBinanceWsFeeds } from '../src/constants';

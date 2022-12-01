@@ -1,5 +1,5 @@
-import { createBinanceWsFeeds, createBitfinexWsFeeds, createCryptoComWsFeeds, createFtxWsFeeds, KnownTokenMap, NETWORK } from '../src/constants';
-import { KnownToken } from '../src/types';
+import { createBinanceWsFeeds, createBitfinexWsFeeds, createCryptoComWsFeeds, createFtxWsFeeds } from '../src/constants';
+import { NETWORK, KnownToken, KnownTokenMap } from '@mycelium-ethereum/swaps-js'
 
 
 const binanceFeeds = [
@@ -132,7 +132,7 @@ describe("Creates appropriate feeds", () => {
     expect(cryptoComFeeds).toEqual([ expectedTokenFeeds[KnownToken.FXS].cryptoCom ]);
   })
   test("All possible tokens", () => {
-    const tokens: KnownToken[] = Object.values(KnownTokenMap[NETWORK.ARBITRUM]);
+    const tokens: KnownToken[] = Object.values(KnownTokenMap[NETWORK.ARBITRUM_MAINNET]);
     const binanceFeeds = createBinanceWsFeeds(tokens)
     const ftxFeeds = createFtxWsFeeds(tokens)
     const bitfinexFeeds = createBitfinexWsFeeds(tokens)

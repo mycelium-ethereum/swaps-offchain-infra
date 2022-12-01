@@ -1,6 +1,6 @@
 import { WebsocketClient, PriceStore } from '../entities'
 import { createBinanceWsFeeds, createBitfinexWsFeeds, /* createFtxWsFeeds, */ createCryptoComWsFeeds, createCoinbaseWsFeeds } from '../constants';
-import { KnownToken } from '../types';
+import { KnownToken } from '@mycelium-ethereum/swaps-js'
 import { wsErrors } from '../utils/prometheus';
 
 const priceEmitter = new PriceStore();

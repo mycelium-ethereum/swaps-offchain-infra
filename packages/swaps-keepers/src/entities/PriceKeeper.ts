@@ -2,7 +2,7 @@ import { ParsedTokenPrice } from '../types';
 import PriceFeed, { UpdateResult } from './PriceFeed';
 import { TypedEmitter } from 'tiny-typed-emitter';
 import { FastPriceFeed } from '@mycelium-ethereum/perpetual-swaps-contracts';
-import {logger} from 'ethers';
+import { logger } from 'ethers';
 
 interface PriceKeeperEvents {
   'executed': (e: UpdateResult) => void;

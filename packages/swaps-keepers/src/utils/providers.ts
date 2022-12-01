@@ -1,26 +1,8 @@
 require('dotenv').config()
 
 import { ethers } from "ethers";
-import { attemptPromiseRecursively, delay, timeoutPromise } from "./helpers";
+import { createProvider, attemptPromiseRecursively, delay } from '@mycelium-ethereum/swaps-js';
 import { logger } from "./logger";
-
-export const isWsProvider = (url: string) => {
-  const protocol = url.split(':')[0];
-  return protocol === "wss" || protocol === "ws"
-}
-
-/**
- * Create a websocketProvider or jsonRPCProvider dependent on provider url
- */
-export const createProvider = (url: string) => {
-  if (isWsProvider(url)) {
-    console.log(`Creating websocket provider: ${url}`)
-    return new ethers.providers.WebSocketProvider(url);
-  }
-
-  console.log(`Creating jsonRPC provider: ${url}`)
-  return new ethers.providers.JsonRpcProvider(url);
-}
 
 const fallbackRPC = process.env.FALLBACK_RPC_URL;
 export const fallbackProvider = fallbackRPC ? createProvider(fallbackRPC) : undefined;
@@ -120,15 +102,3 @@ export const handleClosedConnection = (wsProvider_: ethers.providers.WebSocketPr
   }
   init()
 }
-
-export const checkProviderHealth = async (
-  provider: ethers.providers.Provider,
-) => {
-  try {
-    await timeoutPromise(provider.getBlockNumber(), 10000, 'Timed out whilst checking provider health')
-    return true;
-  } catch (error) {
-    return false;
-  }
-};
-

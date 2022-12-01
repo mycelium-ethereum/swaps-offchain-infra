@@ -1,9 +1,10 @@
 import { ethers } from 'ethers';
 import fetch from 'node-fetch';
+import { LabelledToken, calcMedian } from '@mycelium-ethereum/swaps-js'
 import { binanceSymbolToKnownToken, ftxSymbolToKnownToken, bitfinexSymbolToKnownToken, cryptoComSymbolToKnownToken } from '../constants/priceFeeds';
-import { BinancePrice, bitfinexBestAskPriceIndex, bitfinexBestBidPriceIndex, bitfinexSymbolIndex, BitfinexPrice, FTXPrice, CryptoComPrice, TokenPrices, ParsedTokenPrice, LabelledToken } from '../types';
+import { BinancePrice, bitfinexBestAskPriceIndex, bitfinexBestBidPriceIndex, bitfinexSymbolIndex, BitfinexPrice, FTXPrice, CryptoComPrice, TokenPrices, ParsedTokenPrice } from '../types';
+
 import { tokensToBinanceQuery, tokensToBitfinexQuery, tokensToFTXQuery, tokensToCryptoComQuery, logger } from '../utils';
-import { ethersCalcMedian } from '../utils/helpers';
 
 // requirements
 // https://www.notion.so/tracerdao/Keeper-Requirements-0f41638b5e5043e888eaba48c7f13d4a#d2f8606651cb4e128fdd39fd2a6b3f5b
@@ -104,7 +105,7 @@ export class PricePoller {
     }
     const medianPrices = this.tokens.map((_t, i) => {
       const prices: ethers.BigNumber[] = [binancePrices[i].price, ftxPrices[i].price, bitFinexPrices[i].price, cryptoComPrices[i].price].filter((price) => !!price)
-      const median = ethersCalcMedian(prices);
+      const median = calcMedian(prices);
       return median;
     })
     return medianPrices;

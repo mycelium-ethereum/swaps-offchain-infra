@@ -5,17 +5,16 @@ import express from "express";
 import { priceUpdates, checkedPrices, registerMetrics, priceFetchErrors, swapsIntervalError, ethBalance, priceThresholdExceeded } from "./src/utils/prometheus";
 import { ethers } from "ethers";
 import PositionKeeper from "./src/entities/PositionKeeper";
-import { isSupportedNetwork } from "./src/utils/networks";
 import PriceKeeper from "./src/entities/PriceKeeper";
-import { checkProviderHealth, createProvider, handleClosedConnection, isWsProvider, logger } from "./src";
+import { handleClosedConnection , logger } from "./src";
 
 import priceStore, { subscribeWsFeeds } from './src/services/prices';
 import { orderEmitter, streamOrders } from './src/services/orders';
 import PriceFeed, { UpdateResult } from "./src/entities/PriceFeed";
-import { asyncInterval } from "./src/utils/helpers";
 import PricePoller from "./src/entities/PricePoller";
 
 import { FastPriceFeed, FastPriceFeed__factory, PositionRouter, PositionRouter__factory, VaultPriceFeed__factory } from "@mycelium-ethereum/perpetual-swaps-contracts";
+import { asyncInterval, createProvider, isWsProvider, checkProviderHealth, isSupportedNetwork } from "@mycelium-ethereum/swaps-js";
 
 if (!process.env.RPC_URL) {
   console.error('Must provide RPC_URL');

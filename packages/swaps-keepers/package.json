@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@mycelium-ethereum/perpetual-swaps-contracts": "^1.0.3",
+    "@mycelium-ethereum/swaps-js": "^1.0.0",
     "@types/node-fetch": "^2.6.1",
     "bignumber.js": "^9.0.2",
     "bn.js": "^5.2.1",

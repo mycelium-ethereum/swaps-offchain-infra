@@ -6,7 +6,7 @@ const startServer = (port: number) => {
   const server = http.createServer();
   startWebsocketServer(server);
   return new Promise((resolve) => {
-    return server.listen(port, () => resolve(server));
+     server.listen(port, () => resolve(server));
   });
 }
 

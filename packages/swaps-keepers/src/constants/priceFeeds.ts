@@ -1,5 +1,5 @@
-import { KnownToken } from '../types';
-import {CoinbaseWsTopic} from '../types/websockets';
+import { KnownToken } from '@mycelium-ethereum/swaps-js';
+import { CoinbaseWsTopic } from '../types/websockets';
 
 // https://github.com/gmx-io/gmx-contracts/blob/master/contracts/oracle/FastPriceFeed.sol#L296
 export const MAX_PRICE_FEED_TOKENS_LENGTH = 8;

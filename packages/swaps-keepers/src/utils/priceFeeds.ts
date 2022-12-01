@@ -1,9 +1,10 @@
 import BN from 'bn.js';
+import { LabelledToken } from '@mycelium-ethereum/swaps-js';
 import { knownTokenToBinanceSymbols, knownTokenToBitfinexSymbols } from '../constants/priceFeeds';
-import { LabelledToken, TokenPriceInBits, TokenPriceBitArray, ParsedTokenPrice } from '../types';
-import {MAX_PRICE_FEED_TOKENS_LENGTH} from '../constants';
+import { TokenPriceInBits, TokenPriceBitArray, ParsedTokenPrice } from '../types';
+import { MAX_PRICE_FEED_TOKENS_LENGTH } from '../constants';
 import BigNumber from 'bignumber.js';
-import {ethers} from 'ethers';
+import { ethers } from 'ethers';
 
 const BASE_CRYPTO_COM_URL = 'https://api.crypto.com'
 export const tokensToCryptoComQuery = (/* tokens: LabelledToken[] */): string => {

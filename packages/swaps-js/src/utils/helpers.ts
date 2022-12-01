@@ -1,7 +1,6 @@
 import { ethers } from "ethers";
-import { logger } from "./logger";
 
-export const ethersCalcMedian = (a: ethers.BigNumber[]): ethers.BigNumber=> {
+export const calcMedian = (a: ethers.BigNumber[]): ethers.BigNumber => {
   if (a.length === 0) {
     return ethers.BigNumber.from(0);
   }
@@ -136,7 +135,7 @@ export const timeoutPromise = async (prom: Promise<any>, time = 10000, errorMess
 		new Promise((_r, rej) => timer = setTimeout(rej, time, timeoutError))
     ]).finally(() => clearTimeout(timer)).catch((error) => {
       if (error === timeoutError && errorMessage) {
-        logger.error(errorMessage, { duration: time, error: new Error(errorMessage) })
+        console.error(errorMessage, { duration: time, error: new Error(errorMessage) })
       }
       // throw the error on
       throw error
