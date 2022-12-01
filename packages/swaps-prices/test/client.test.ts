@@ -13,8 +13,8 @@ const port = 3000;
 let server: any;
 
 beforeEach(async () => {
-  jest.useFakeTimers();
   server = await startServer(port);
+  jest.useFakeTimers();
 })
 
 afterEach(async () => {

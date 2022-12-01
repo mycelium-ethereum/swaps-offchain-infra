@@ -1,11 +1,14 @@
 {
   "name": "root",
   "private": true,
+  "npmClient": "yarn",
+  "useWorkspaces": true,
   "scripts": {
     "graph": "npx nx graph",
     "build": "npx lerna run build",
     "test": "npx lerna run test",
-    "lint": "npx lerna run lint"
+    "lint": "npx lerna run lint",
+    "dev": "npx lerna run dev"
   },
   "workspaces": [
     "packages/*"
