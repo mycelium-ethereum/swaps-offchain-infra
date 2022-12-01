@@ -1,0 +1,38 @@
+{
+  "name": "@mycelium-ethereum/swaps-prices",
+  "version": "1.0.0",
+  "description": "Serving swaps pricing",
+  "main": "index.js",
+  "author": "Dospore",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node-dev --inspect --trace-warnings --respawn ./src/index.ts",
+    "client": "ts-node-dev --inspect --trace-warnings --respawn ./test/client.ts",
+    "test": "jest",
+    "lint:fix": "eslint --fix"
+  },
+  "dependencies": {
+    "@mycelium-ethereum/swaps-keepers": "*",
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.14",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "ethers": "^5.7.2",
+    "express": "^4.18.2",
+    "rate-limiter-flexible": "^2.4.1",
+    "uuid": "^9.0.0",
+    "ws": "^8.10.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.2.1",
+    "@types/uuid": "^8.3.4",
+    "@types/ws": "^8.5.3",
+    "eslint": "^8.26.0",
+    "jest": "^29.2.2",
+    "ts-jest": "^29.0.3",
+    "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^4.8.4"
+  }
+}

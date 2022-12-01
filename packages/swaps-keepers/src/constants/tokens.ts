@@ -1,0 +1,24 @@
+import { KnownToken } from "../types";
+import { NETWORK } from "./networks";
+
+// map of known network tokens
+export const KnownTokenMap: Record<NETWORK, Record<string, KnownToken>> = {
+  [NETWORK.ARBITRUM]: {
+    "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f": KnownToken.BTC,
+    "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1": KnownToken.ETH,
+    "0xf97f4df75117a78c1A5a0DBb814Af92458539FB4": KnownToken.LINK,
+    "0xFa7F8980b0f1E64A2062791cc3b0871572f1F7f0": KnownToken.UNI,
+    "0x9d2F299715D94d8A7E6F5eaa8E654E8c74a988A7": KnownToken.FXS,
+    "0x11cDb42B0EB46D95f990BeDD4695A6e3fA034978": KnownToken.CRV,
+    "0x040d1EdC9569d4Bab2D15287Dc5A4F10F56a56B8": KnownToken.BAL,
+  },
+  [NETWORK.ARBITRUM_RINKEBY]: {
+    "0xB47e6A5f8b33b3F17603C83a0535A9dcD7E32681": KnownToken.ETH,
+    "0x5360425C5dd9a3B3a41F619515F9318caA34CfC9": KnownToken.BTC,
+  },
+  [NETWORK.ARBITRUM_GOERLI]: {
+    "0x4CC823834038c92CFA66C40C7806959529A3D782": KnownToken.BTC,
+    "0x08466D6683d2A39E3597500c1F17b792555FCAB9": KnownToken.ETH,
+    "0x6E7155bde03E582e9920421Adf14E10C15dBe890": KnownToken.LINK,
+  },
+};
