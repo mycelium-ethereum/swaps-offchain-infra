@@ -1,4 +1,4 @@
-name: Deploy swaps prices
+name: Deploy swaps prices image to k8's cluster
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 env:
   GAR_LOCATION: us-central1
-  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  PROJECT_ID: ${{ secrets.PRICES_GKE_PROJECT }}
   GKE_CLUSTER: swaps-prices-cluster # Add your cluster name here.
   GKE_ZONE: us-central1   # Add your cluster zone here.
   DEPLOYMENT_NAME: swaps-prices # Add your deployment name here.
@@ -41,7 +41,7 @@ jobs:
     - id: 'auth'
       uses: 'google-github-actions/auth@v0'
       with:
-        credentials_json: '${{ secrets.GKE_SA_KEY }}'
+        credentials_json: '${{ secrets.PRICES_GKE_SA_KEY }}'
 
     # Setup gcloud CLI
     - name: Set up Cloud SDK
