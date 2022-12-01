@@ -1,4 +1,4 @@
-import { KnownToken } from '@mycelium-ethereum/swaps-keepers/dist/src/';
+import { KnownToken } from '@mycelium-ethereum/swaps-js';
 import { ethers } from 'ethers';
 import * as SocketService from '../src/services/swapsSocket';
 const {

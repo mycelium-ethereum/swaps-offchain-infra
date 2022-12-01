@@ -2,9 +2,9 @@ require('dotenv').config()
 
 import { ethers } from "ethers";
 import { TypedEmitter } from "tiny-typed-emitter";
-import { KnownToken, ParsedTokenPrice } from '../types';
+import { ParsedTokenPrice } from '../types';
+import { KnownToken, calcMedian } from "@mycelium-ethereum/swaps-js";
 import { logger } from "../utils";
-import { ethersCalcMedian } from "../utils/helpers";
 import { priceStored } from "../utils/prometheus";
 
 interface PriceEvents {
@@ -83,7 +83,7 @@ export class PriceStore extends TypedEmitter<PriceEvents> {
   getComparablePrices(knownToken: KnownToken): { feedPrice: ethers.BigNumber, medianPrice: ethers.BigNumber } {
     const { feed, ...cexPrices } = this.prices[knownToken]
     let feedPrice = feed;
-    const medianPrice = ethersCalcMedian(Object.values(cexPrices))
+    const medianPrice = calcMedian(Object.values(cexPrices))
 
     if (!feedPrice) {
       this.prices[knownToken].feed = medianPrice;

@@ -1,7 +1,7 @@
+import { KnownToken } from "@mycelium-ethereum/swaps-js"
 import { ethers } from "ethers"
 import { binanceSymbolToKnownToken, bitfinexSymbolToKnownToken, coinbaseSymbolToKnownToken, cryptoComSymbolToKnownToken, ftxSymbolToKnownToken, knownTokenToBitfinexSymbols } from "../constants"
-import {WsVerifiedTopicList} from "../entities/WsStore"
-import { KnownToken } from "../types"
+import { WsVerifiedTopicList } from "../entities/WsStore"
 import { WsUpdate } from "../types/websockets"
 
 export function getWsSubscribeMessage(wsKey: string) {

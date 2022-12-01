@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { KnownToken } from "./tokens";
+import { KnownToken } from '@mycelium-ethereum/swaps-js'
 
 export type WsKey = 'binance' | 'ftx' | 'bitfinex' | 'cryptoCom' | 'coinbase';
 

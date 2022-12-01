@@ -1,6 +1,6 @@
-import { createBinanceWsFeeds, createBitfinexWsFeeds, createCryptoComWsFeeds, createCoinbaseWsFeeds, KnownToken } from '@mycelium-ethereum/swaps-keepers';
-import { WebsocketClient } from '@mycelium-ethereum/swaps-keepers/dist/src/entities/SocketClient';
-import { NETWORKS, networkTokens } from '../constants';
+import { createBinanceWsFeeds, createBitfinexWsFeeds, createCryptoComWsFeeds, createCoinbaseWsFeeds } from '@mycelium-ethereum/swaps-keepers';
+import { WebsocketClient } from '@mycelium-ethereum/swaps-keepers/src/entities/SocketClient';
+import { KnownToken, networkTokens, NETWORK } from '@mycelium-ethereum/swaps-js';
 import { v4 as uuidv4 } from 'uuid';
 import ws from 'ws';
 import priceStore from './priceStore';
@@ -113,7 +113,7 @@ coinbaseClient.on('error', onError)
  * Subscribes each feed to a list of known tokens
  */
 const subscribeWsFeeds = () => {
-  const tokens: KnownToken[] = networkTokens[NETWORKS.ARBITRUM_MAINNET].map((token) => token.knownToken);
+  const tokens: KnownToken[] = networkTokens[NETWORK.ARBITRUM_MAINNET].map((token) => token.knownToken);
   bitfinexClient.subscribe(createBitfinexWsFeeds(tokens))
   // ftxClient.subscribe(createFtxWsFeeds(tokens))
   binanceClient.subscribe(createBinanceWsFeeds(tokens))

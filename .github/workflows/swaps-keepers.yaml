@@ -5,7 +5,7 @@ on:
     branches: [ master ]
 
 env:
-  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  PROJECT_ID: ${{ secrets.KEEPERS_GKE_PROJECT }}
   IMAGE: swaps-keepers
 
 jobs:
@@ -36,7 +36,7 @@ jobs:
     - id: 'auth'
       uses: 'google-github-actions/auth@v0'
       with:
-        credentials_json: '${{ secrets.GKE_SA_KEY }}'
+        credentials_json: '${{ secrets.KEEPERS_GKE_SA_KEY }}'
 
     # Setup gcloud CLI
     - name: Set up Cloud SDK
@@ -54,6 +54,7 @@ jobs:
     - name: Build
       run: |-
         docker build \
+          -f "./packages/swaps-keepers/Dockerfile" \
           --tag "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA" \
           --tag "latest" \
           --build-arg GITHUB_SHA="$GITHUB_SHA" \

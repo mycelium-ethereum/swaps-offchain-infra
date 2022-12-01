@@ -1,13 +1,18 @@
 import { ethers } from 'ethers';
-import { KnownTokenMap } from '../constants/tokens';
-import { isSupportedNetwork } from '../utils/networks';
-import { ParsedTokenPrice, PriceFeedToken } from '../types';
-import { NETWORK } from '../constants';
+import {
+  KnownTokenMap,
+  NETWORK,
+  PriceFeedToken,
+  delay,
+  attemptPromiseRecursively,
+  timeoutError,
+  isSupportedNetwork
+} from '@mycelium-ethereum/swaps-js';
+import { ParsedTokenPrice } from '../types';
 import { PRICE_PRECISION } from '../constants/keepers';
-import { attemptPromiseRecursively, getPriceBits, orderPrices, timeoutError } from '../utils';
+import { getPriceBits, orderPrices } from '../utils';
 import { logger } from '../utils/logger'
 import { priceUpdateErrors } from '../utils/prometheus';
-import { delay } from '../utils/helpers';
 import { FastPriceFeed, FastPriceFeed__factory, VaultPriceFeed__factory } from '@mycelium-ethereum/perpetual-swaps-contracts';
 import { callContract, fallbackProvider } from '../utils/providers';
 

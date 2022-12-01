@@ -1,7 +1,5 @@
-import { ethersCalcMedian } from "@mycelium-ethereum/swaps-keepers/src/utils/helpers";
+import { networkTokens, HTTP_STATUS_CODE, calcMedian } from "@mycelium-ethereum/swaps-js";
 import { ethers } from "ethers";
-import { networkTokens } from "../constants";
-import { HTTP_STATUS_CODE } from "../constants/requests";
 import priceStore from './priceStore';
 
 type GetPriceArgs = {
@@ -46,7 +44,7 @@ export const getPrices = async ({ network }: GetPriceArgs) => {
       }), {})
 
       const priceAges = Object.values(allPrices).map((price) => ethers.BigNumber.from(price.updated))
-      const medianAge = ethersCalcMedian(priceAges)
+      const medianAge = calcMedian(priceAges)
 
       // we want to be in 10^30 units but prices are stored at 10^18
       tokens[token.address] = {

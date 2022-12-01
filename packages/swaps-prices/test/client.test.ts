@@ -13,14 +13,14 @@ const port = 3000;
 let server: any;
 
 beforeEach(async () => {
+  server = await startServer(port);
   jest.useFakeTimers();
-  server = await startServer(3000);
 })
 
-afterEach(() => {
-  server.close();
-  connectedClients.clear();
+afterEach(async () => {
   jest.useRealTimers();
+  await server.close();
+  connectedClients.clear();
 })
 
 
@@ -67,14 +67,14 @@ describe("Connected clients", () => {
     })
 
     jest.useFakeTimers();
-    const pingConnectedClients = startPingingConnectedClients(10000);
-    jest.advanceTimersByTime(10000);
+    const pingConnectedClients = startPingingConnectedClients(5000);
+    jest.advanceTimersByTime(5000);
 
     Array.from(connectedClients.values()).forEach((client_) => {
       expect(client_.isAlive).toEqual(false);
     })
 
-    jest.advanceTimersByTime(10000);
+    jest.advanceTimersByTime(5000);
 
     Array.from(connectedClients.values()).forEach((client_) => {
       expect(client_.isAlive).toEqual(false);

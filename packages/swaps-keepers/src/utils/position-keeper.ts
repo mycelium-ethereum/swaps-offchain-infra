@@ -1,4 +1,4 @@
-import {PositionRouter} from "@mycelium-ethereum/perpetual-swaps-contracts";
+import { PositionRouter } from "@mycelium-ethereum/perpetual-swaps-contracts";
 import { ethers } from "ethers";
 import { QueueLength } from '../types/position-keeper';
 import { callContract } from "./providers";

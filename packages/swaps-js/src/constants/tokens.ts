@@ -1,9 +1,8 @@
-import { KnownToken, LabelledToken } from '@mycelium-ethereum/swaps-keepers';
-import { NETWORKS } from './networks';
-
+import { NETWORK } from '../constants/networks';
+import { KnownToken, LabelledToken } from '../types/tokens';
 
 export const networkTokens: Record<string, LabelledToken[]> = {
-  [NETWORKS.ARBITRUM_MAINNET]: [
+  [NETWORK.ARBITRUM_MAINNET]: [
     {
       address: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
       knownToken: KnownToken.ETH
@@ -28,7 +27,7 @@ export const networkTokens: Record<string, LabelledToken[]> = {
       knownToken: KnownToken.CRV
     }
   ],
-  [NETWORKS.ARBITRUM_RINKEBY]: [
+  [NETWORK.ARBITRUM_RINKEBY]: [
     {
       address: '0xB47e6A5f8b33b3F17603C83a0535A9dcD7E32681',
       knownToken: KnownToken.ETH
@@ -37,7 +36,7 @@ export const networkTokens: Record<string, LabelledToken[]> = {
       knownToken: KnownToken.BTC
     }
   ],
-  [NETWORKS.ARBITRUM_GOERLI]: [
+  [NETWORK.ARBITRUM_GOERLI]: [
     {
       address: '0x08466D6683d2A39E3597500c1F17b792555FCAB9',
       knownToken: KnownToken.ETH
@@ -51,3 +50,13 @@ export const networkTokens: Record<string, LabelledToken[]> = {
     }
   ]
 };
+
+
+// map of known network tokens
+export const KnownTokenMap: Record<NETWORK, Record<string, KnownToken>> = Object.keys(networkTokens).reduce((o, k) => ({
+  ...o,
+  [k]: networkTokens[k].reduce((tokens, labelledToken) => ({
+    ...tokens,
+    [labelledToken.address]: labelledToken.knownToken
+  }), {})
+}), {} as Record<NETWORK, Record<string, KnownToken>>)
