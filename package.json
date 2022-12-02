@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build": "npx nx affected --target=build --all --base=master",
+    "build": "npx nx affected --target=build --all",
     "build:swaps-js": "npx nx build swaps-js"
   },
   "private": true,
