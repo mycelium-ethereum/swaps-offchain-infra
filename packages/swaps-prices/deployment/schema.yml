@@ -1,8 +1,0 @@
-#@data/values
----
-appName: swaps-prices
-serviceName: swaps-prices-service
-ipName: swaps-prices-ip
-ingressName: swaps-prices-ingress
-certName: swaps-prices-cert
-certDomain: pricing.mycelium.xyz

@@ -1,19 +1,26 @@
 {
-  "name": "root",
-  "private": true,
-  "npmClient": "yarn",
-  "useWorkspaces": true,
+  "name": "swaps-offchain-infra",
+  "version": "0.0.0",
+  "license": "MIT",
   "scripts": {
-    "graph": "npx nx graph",
-    "build": "npx lerna run build",
-    "test": "npx lerna run test",
-    "lint": "npx lerna run lint",
-    "dev": "npx lerna run dev"
+    "build": "npx nx build swaps-js",
+    "test": "npx nx test swaps-js",
+    "graph": "npx nx affected:graph"
+  },
+  "private": true,
+  "devDependencies": {
+    "@nrwl/nx-cloud": "latest",
+    "@types/jest": "^29.2.3",
+    "jest": "^29.3.1",
+    "nx": "15.2.4",
+    "prettier": "^2.6.2",
+    "ts-jest": "^29.0.3",
+    "typescript": "^4.9.3"
   },
   "workspaces": [
     "packages/*"
   ],
-  "devDependencies": {
-    "lerna": "^6.1.0"
+  "dependencies": {
+    "ethers": "^5.7.2"
   }
 }
