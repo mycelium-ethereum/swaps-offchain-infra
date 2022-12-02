@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 name: Test and Build
 =======
 <<<<<<< HEAD
@@ -43,6 +44,8 @@ jobs:
       - run: npm run build
       - run: npm run test
 =======
+=======
+>>>>>>> 8f3dae2 (Update quality checks)
 name: Test and Build
 
 on:
@@ -93,6 +96,9 @@ jobs:
           yarn nx run-many --target=lint --all
           yarn nx run-many --target=build --all --prod
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 1be3cea (Add first action)
 >>>>>>> 5204dc4 (Add first action)
+=======
+>>>>>>> 8f3dae2 (Update quality checks)
