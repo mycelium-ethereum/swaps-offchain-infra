@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@mycelium-ethereum/swaps-js": ["packages/swaps-js/src/index.ts"]
+      "@mycelium-ethereum/swaps-js": ["packages/swaps-js/src/index.ts"],
+      "@mycelium-ethereum/test": ["packages/test/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
