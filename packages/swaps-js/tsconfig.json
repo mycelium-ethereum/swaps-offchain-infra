@@ -1,12 +1,22 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "module": "commonjs",
-    "esModuleInterop": true,
-    "target": "es6",
-    "moduleResolution": "node",
-    "declaration": true, // Generate d.ts files
-    "sourceMap": true,
-    "outDir": "dist"
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true
   },
-  "lib": ["es2015"]
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "./tsconfig.lib.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
 }
