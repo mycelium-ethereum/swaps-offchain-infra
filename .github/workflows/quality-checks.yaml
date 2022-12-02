@@ -1,3 +1,51 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+name: Test and Build
+=======
+<<<<<<< HEAD
+name: Test and build
+>>>>>>> 5204dc4 (Add first action)
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup NodeJS 16
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+
+      - name: Install yarn
+        run: npm install -g yarn
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
+
+      - name: Cache yarn dependencies
+        uses: actions/cache@v2
+        id: yarn-cache
+        with:
+<<<<<<< HEAD
+=======
+          node-version: ${{ matrix.node-version }}
+      - run: yarn install --frozen-lockfile
+      - run: npm run build
+      - run: npm run test
+=======
+=======
+>>>>>>> 8f3dae2 (Update quality checks)
 name: Test and Build
 
 on:
@@ -31,6 +79,7 @@ jobs:
         uses: actions/cache@v2
         id: yarn-cache
         with:
+>>>>>>> 5204dc4 (Add first action)
           path: |
             ${{ steps.yarn-cache-dir-path.outputs.dir }}
             **\node_modules
@@ -46,3 +95,10 @@ jobs:
           RUN=CI yarn nx run-many --target=test --all --parallel 5
           yarn nx run-many --target=lint --all
           yarn nx run-many --target=build --all --prod
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1be3cea (Add first action)
+>>>>>>> 5204dc4 (Add first action)
+=======
+>>>>>>> 8f3dae2 (Update quality checks)

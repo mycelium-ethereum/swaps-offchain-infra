@@ -1,7 +1,7 @@
 {
-  "name": "swaps-js",
-  "version": "1.0.0",
-  "description": "A collection of reusable js utils",
+  "name": "@mycelium-ethereum/swaps-js",
+  "version": "0.0.1",
+  "type": "commonjs",
   "main": "./dist/src/index.js",
   "typings": "./dist/src/index.d.ts",
   "files": [
@@ -10,9 +10,5 @@
   "scripts": {
     "build": "tsc --outDir dist",
     "test": "jest"
-  },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {},
-  "dependencies": {}
+  }
 }
