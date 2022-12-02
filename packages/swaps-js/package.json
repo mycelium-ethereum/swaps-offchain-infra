@@ -1,5 +1,5 @@
 {
-  "name": "@mycelium-ethereum/swaps-js",
+  "name": "swaps-js",
   "version": "1.0.0",
   "description": "A collection of reusable js utils",
   "main": "./dist/src/index.js",
