@@ -10,7 +10,14 @@
   },
   "private": true,
   "dependencies": {
-    "tslib": "^2.3.0"
+    "@mycelium-ethereum/perpetual-swaps-contracts": "^1.0.3",
+    "bignumber.js": "^9.1.1",
+    "bn.js": "^5.2.1",
+    "node-fetch": "^3.3.0",
+    "prom-client": "^14.1.0",
+    "tiny-typed-emitter": "^2.1.0",
+    "tslib": "^2.3.0",
+    "winston": "^3.8.2"
   },
   "devDependencies": {
     "@nrwl/cli": "15.2.4",
