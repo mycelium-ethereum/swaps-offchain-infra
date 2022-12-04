@@ -36,5 +36,6 @@
   "workspaceLayout": {
     "appsDir": "packages",
     "libsDir": "packages"
-  }
+  },
+  "defaultProject": "swaps-keepers"
 }

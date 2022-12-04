@@ -6,6 +6,7 @@
     "declaration": false,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "es2015",
@@ -15,7 +16,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@mycelium-ethereum/swaps-js": ["packages/swaps-js/src/index.ts"]
+      "@mycelium-ethereum/swaps-js": ["packages/swaps-js/src/index.ts"],
+      "@mycelium-ethereum/test": ["packages/test/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
