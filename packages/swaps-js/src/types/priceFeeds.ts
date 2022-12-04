@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { ethers } from 'ethers';
-import { KnownToken } from "@mycelium-ethereum/swaps-js";
+import { KnownToken } from "../types/tokens";
 
 export type Price = BigNumber;
 
