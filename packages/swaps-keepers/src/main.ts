@@ -5,7 +5,7 @@ import express from "express";
 import { ethers } from "ethers";
 import PositionKeeper from "./services/positionKeeper";
 import PriceKeeper from "./services/priceKeeper";
-import PricePoller from "./services/PricePoller";
+import PricePoller from "./services/pricePoller";
 import PriceFeed, { UpdateResult } from "./services/priceFeed";
 import { handleClosedConnection } from "./utils";
 import { priceUpdates, checkedPrices, registerMetrics, priceFetchErrors, swapsIntervalError, ethBalance, priceThresholdExceeded } from "./utils/prometheus";
