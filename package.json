@@ -7,6 +7,7 @@
     "test": "npx nx affected --target=test --all",
     "lint": "npx nx affected --target=lint --all",
     "format": "npx nx format:write",
+    "format:check": "npx nx format:check",
     "build:swaps-js": "npx nx build swaps-js",
     "generate:lib": "./tools/generators/lib.sh",
     "generate:node": "./tools/generators/node-app.sh"

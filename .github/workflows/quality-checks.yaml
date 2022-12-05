@@ -43,6 +43,7 @@ jobs:
 
       - name: Test
         run: |
-          RUN=CI yarn nx run-many --target=test --all --parallel 5
-          yarn nx run-many --target=lint --all
-          yarn nx run-many --target=build --all --prod
+          RUN=CI yarn test
+          yarn lint
+          yarn format:check
+          yarn build
