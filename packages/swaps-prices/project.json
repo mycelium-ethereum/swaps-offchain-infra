@@ -47,6 +47,14 @@
                 "jestConfig": "packages/swaps-prices/jest.config.ts",
                 "passWithNoTests": true
             }
+        },
+        "dev": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    "TS_NODE_PROJECT=tsconfig.base.json ts-node-dev -r tsconfig-paths/register packages/swaps-prices/src/main.ts"
+                ]
+            }
         }
     },
     "tags": []
