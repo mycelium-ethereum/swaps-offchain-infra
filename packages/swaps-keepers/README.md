@@ -45,27 +45,27 @@ Create a watcher docker image with `npm run docker:build-watcher` or `yarn docke
 
 The created image does not include the required env variables OR any of the optional watcher variables.
 
-- RPC_URL - Network RPC (required)
-- SIGNING_PRIVATE_KEY - permissioned account to call updatePrices (required)
-- PRICE_FEED - price feed contract address (required)
-- POSITION_ROUTER - position router contract address (required only for swaps-keepers)
+-   RPC_URL - Network RPC (required)
+-   SIGNING_PRIVATE_KEY - permissioned account to call updatePrices (required)
+-   PRICE_FEED - price feed contract address (required)
+-   POSITION_ROUTER - position router contract address (required only for swaps-keepers)
 
 ## Run the image
 
 Start running the `PriceKeeper` and `PositionKeeper`
 
-- on Arbitrum `docker run -p 9111:9111 -e ARBITRUM_RPC="https://arb1.arbitrum.io/rpc" -e SIGNING_PRIVATE_KEY="A_PERMISSIONED_PRIVATE_KEY" -e PRICE_FEED="priceFeed address" -e POSITION_ROUTER="positionRouter address" swaps-keepers`
-- on Arbitrum rinkeby `docker run -p 9111:9111 -e ARBITRUM_TESTNET_RPC="https://rinkeby.arbitrum.io/rpc" -e SIGNING_PRIVATE_KEY="A_PERMISSIONED_PRIVATE_KEY" -e PRICE_FEED="priceFeed address" POSITION_ROUTER="positionRouter address" swaps-keepers`
+-   on Arbitrum `docker run -p 9111:9111 -e ARBITRUM_RPC="https://arb1.arbitrum.io/rpc" -e SIGNING_PRIVATE_KEY="A_PERMISSIONED_PRIVATE_KEY" -e PRICE_FEED="priceFeed address" -e POSITION_ROUTER="positionRouter address" swaps-keepers`
+-   on Arbitrum rinkeby `docker run -p 9111:9111 -e ARBITRUM_TESTNET_RPC="https://rinkeby.arbitrum.io/rpc" -e SIGNING_PRIVATE_KEY="A_PERMISSIONED_PRIVATE_KEY" -e PRICE_FEED="priceFeed address" POSITION_ROUTER="positionRouter address" swaps-keepers`
 
 Start running the `Watcher`
 
-- on Arbitrum `docker run -e NETWORK="42161" -e ARBITRUM_RPC="https://arb1.arbitrum.io/rpc" -e SIGNING_PRIVATE_KEY="<A_PERMISSIONED_PRIVATE_KEY>" swaps-watcher`
-- on Arbitrum rinkeby `docker run -e NETWORK="421611" -e ARBITRUM_TESTNET_RPC="https://rinkeby.arbitrum.io/rpc" -e SIGNING_PRIVATE_KEY="<A_PERMISSIONED_PRIVATE_KEY>" swaps-watcher`
+-   on Arbitrum `docker run -e NETWORK="42161" -e ARBITRUM_RPC="https://arb1.arbitrum.io/rpc" -e SIGNING_PRIVATE_KEY="<A_PERMISSIONED_PRIVATE_KEY>" swaps-watcher`
+-   on Arbitrum rinkeby `docker run -e NETWORK="421611" -e ARBITRUM_TESTNET_RPC="https://rinkeby.arbitrum.io/rpc" -e SIGNING_PRIVATE_KEY="<A_PERMISSIONED_PRIVATE_KEY>" swaps-watcher`
 
 There is also the option of using a custom/private RPC in place of the public ones used here.
 
 ## Push New GCP Image
 
-- `npm run docker:build-keepers`
-- `docker tag swaps-keepers gcr.io/avian-direction-235610/swaps-keepers:version`
-- `docker push gcr.io/avian-direction-235610/swaps-keepers:version
+-   `npm run docker:build-keepers`
+-   `docker tag swaps-keepers gcr.io/avian-direction-235610/swaps-keepers:version`
+-   `docker push gcr.io/avian-direction-235610/swaps-keepers:version

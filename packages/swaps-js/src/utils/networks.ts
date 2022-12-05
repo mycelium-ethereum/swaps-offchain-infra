@@ -1,5 +1,5 @@
-import { NETWORK } from '../constants/networks';
+import { NETWORK } from "../constants/networks";
 
 export const isSupportedNetwork = (network: string): boolean => {
-  return Object.values(NETWORK).includes(network as NETWORK);
+    return Object.values(NETWORK).includes(network as NETWORK);
 };

@@ -1,16 +1,16 @@
 /* eslint-disable */
 export default {
-  displayName: 'swaps-prices',
-  preset: '../../jest.preset.js',
-  globals: {
-    'ts-jest': {
-      tsconfig: '<rootDir>/tsconfig.spec.json',
+    displayName: "swaps-prices",
+    preset: "../../jest.preset.js",
+    globals: {
+        "ts-jest": {
+            tsconfig: "<rootDir>/tsconfig.spec.json",
+        },
     },
-  },
-  testEnvironment: 'node',
-  transform: {
-    '^.+\\.[tj]s$': 'ts-jest',
-  },
-  moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/packages/swaps-prices',
+    testEnvironment: "node",
+    transform: {
+        "^.+\\.[tj]s$": "ts-jest",
+    },
+    moduleFileExtensions: ["ts", "js", "html"],
+    coverageDirectory: "../../coverage/packages/swaps-prices",
 };

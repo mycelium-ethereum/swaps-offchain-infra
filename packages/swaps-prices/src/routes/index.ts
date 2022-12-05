@@ -1,1 +1,1 @@
-export { default as priceRouter } from './prices';
+export { default as priceRouter } from "./prices";
