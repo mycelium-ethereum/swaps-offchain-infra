@@ -12,5 +12,5 @@ export default {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/packages/swaps-js',
-  setupFilesAfterEnv: ["./test/setup.js"],
+  setupFilesAfterEnv: ['./test/setup.js'],
 };

@@ -1,11 +1,11 @@
 export type LabelledToken = {
-  address: string,
-  knownToken: KnownToken
-}
+  address: string;
+  knownToken: KnownToken;
+};
 
 export type PriceFeedToken = LabelledToken & {
-  precision: number
-}
+  precision: number;
+};
 
 export enum KnownToken {
   ETH = 'ETH',

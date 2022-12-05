@@ -3,13 +3,12 @@ import { WsConnectionState } from './socketClient';
 import { KnownToken, WsTopic } from '../types';
 import { logger } from '../utils';
 
-
 type WsTopicList = Set<WsTopic>;
 type KeyedWsTopicLists = {
   [key: string]: WsTopicList;
 };
 
-export type WsVerifiedTopicList = Record<string, KnownToken>
+export type WsVerifiedTopicList = Record<string, KnownToken>;
 
 interface WsStoredState {
   ws?: WebSocket;
@@ -32,7 +31,7 @@ function isDeepObjectMatch(object1: any, object2: any) {
 export default class WsStore {
   private wsState: {
     [key: string]: WsStoredState;
-  }
+  };
 
   constructor() {
     this.wsState = {};
@@ -56,12 +55,15 @@ export default class WsStore {
 
   create(key: string): WsStoredState | undefined {
     if (this.hasExistingActiveConnection(key)) {
-      logger.warning('WsStore setConnection() overwriting existing open connection: ', this.getWs(key));
+      logger.warning(
+        'WsStore setConnection() overwriting existing open connection: ',
+        this.getWs(key)
+      );
     }
     this.wsState[key] = {
       subscribedTopics: new Set(),
       verifiedTopics: {},
-      connectionState: WsConnectionState.READY_STATE_INITIAL
+      connectionState: WsConnectionState.READY_STATE_INITIAL,
     };
     return this.get(key);
   }
@@ -87,7 +89,10 @@ export default class WsStore {
 
   setWs(key: string, wsConnection: WebSocket): WebSocket {
     if (this.isWsOpen(key)) {
-      logger.warning('WsStore setConnection() overwriting existing open connection: ', this.getWs(key));
+      logger.warning(
+        'WsStore setConnection() overwriting existing open connection: ',
+        this.getWs(key)
+      );
     }
     this.get(key, true)!.ws = wsConnection;
     return wsConnection;
@@ -97,7 +102,10 @@ export default class WsStore {
 
   isWsOpen(key: string): boolean {
     const existingConnection = this.getWs(key);
-    return !!existingConnection && existingConnection.readyState === existingConnection.OPEN;
+    return (
+      !!existingConnection &&
+      existingConnection.readyState === existingConnection.OPEN
+    );
   }
 
   getConnectionState(key: string): WsConnectionState {
@@ -122,8 +130,11 @@ export default class WsStore {
     return this.get(key, true)!.verifiedTopics;
   }
 
-  getVerifiedTopic(key: string, topicKey: string | number): KnownToken | undefined {
-    return this.getVerifiedTopics(key)[topicKey]
+  getVerifiedTopic(
+    key: string,
+    topicKey: string | number
+  ): KnownToken | undefined {
+    return this.getVerifiedTopics(key)[topicKey];
   }
 
   getTopicsByKey(): KeyedWsTopicLists {
@@ -161,7 +172,11 @@ export default class WsStore {
 
   // helpful if you want match a topic after subscribing
   // eg bitfinex returns a channelId
-  verifySubscription(key: string, topicKey: string | number, token: KnownToken): any {
+  verifySubscription(
+    key: string,
+    topicKey: string | number,
+    token: KnownToken
+  ): any {
     this.get(key, true)!.verifiedTopics[topicKey] = token;
   }
 

@@ -7,7 +7,11 @@ import express, { ErrorRequestHandler } from 'express';
 import { json as jsonBodyParser } from 'body-parser';
 import cors from 'cors';
 import { priceRouter } from './routes';
-import { startWebsocketServer, subscribeWsFeeds, startPingingConnectedClients } from './services';
+import {
+  startWebsocketServer,
+  subscribeWsFeeds,
+  startPingingConnectedClients,
+} from './services';
 
 const app = express();
 const port = process.env.PORT || 3030;
@@ -26,18 +30,30 @@ const isProd = () => process.env.NODE_ENV === 'prod';
 /* eslint-disable  @typescript-eslint/no-unused-vars */
 // the unused vars in the function signature are required
 // to make express use this as error handling middleware
-const fallbackErrorHandler: ErrorRequestHandler = function (error, req, res, _next) {
+const fallbackErrorHandler: ErrorRequestHandler = function (
+  error,
+  req,
+  res,
+  _next
+) {
   /* eslint-enable  @typescript-eslint/no-unused-vars */
   console.error('Caught Unhandled Error:', error.stack);
-  console.error('Request:', JSON.stringify({
-    headers: req.headers,
-    protocol: req.protocol,
-    url: req.url,
-    method: req.method,
-    body: req.body,
-    cookies: req.cookies,
-    ip: req.ip
-  }, null, 2));
+  console.error(
+    'Request:',
+    JSON.stringify(
+      {
+        headers: req.headers,
+        protocol: req.protocol,
+        url: req.url,
+        method: req.method,
+        body: req.body,
+        cookies: req.cookies,
+        ip: req.ip,
+      },
+      null,
+      2
+    )
+  );
   if (isProd()) {
     res.status(500).send({ message: 'Unhandled Error' });
   } else {
@@ -60,10 +76,9 @@ const main = async () => {
   startWebsocketServer(server);
   subscribeWsFeeds();
   startPingingConnectedClients();
-}
+};
 
-main()
-  .catch(error => {
-    console.error('Failed to initialise app', error);
-    process.exit(1);
-  });
+main().catch((error) => {
+  console.error('Failed to initialise app', error);
+  process.exit(1);
+});

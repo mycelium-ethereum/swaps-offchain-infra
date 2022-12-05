@@ -1,9 +1,23 @@
 import WebSocket from 'ws';
 import { TypedEmitter } from 'tiny-typed-emitter';
-import { isWsPong, WSClientConfigurableOptions, WebsocketClientOptions, parseRawWsMessage, getWsSubscribeMessage, getWsUnsubscribeMessage, isUpdateMessage, parseUpdateMessage, getWsPingMessage, isSubscriptionResponse, getSubscriptionInfo, isHeartBeatMessage, getWsHeartBeatMessage } from './wsMessages';
+import {
+  isWsPong,
+  WSClientConfigurableOptions,
+  WebsocketClientOptions,
+  parseRawWsMessage,
+  getWsSubscribeMessage,
+  getWsUnsubscribeMessage,
+  isUpdateMessage,
+  parseUpdateMessage,
+  getWsPingMessage,
+  isSubscriptionResponse,
+  getSubscriptionInfo,
+  isHeartBeatMessage,
+  getWsHeartBeatMessage,
+} from './wsMessages';
 import WsStore from './wsStore';
 import type { WsUpdate, WsTopic, WsKey } from '../types';
-import { logger } from '../utils/logger'
+import { logger } from '../utils/logger';
 
 export const READY_STATE_INITIAL = 0;
 export const READY_STATE_CONNECTING = 1;
@@ -16,21 +30,31 @@ export enum WsConnectionState {
   READY_STATE_CONNECTING,
   READY_STATE_CONNECTED,
   READY_STATE_CLOSING,
-  READY_STATE_RECONNECTING
+  READY_STATE_RECONNECTING,
 }
 
 interface WebsocketEvents {
-  'open': ({ wsKey, event }: { wsKey: string, event: any }) => void;
-  'reconnected': ({ wsKey, event }: { wsKey: string, event: any }) => void;
-  'response': (response: any) => void;
-  'error': ({ error, wsKey, type, event }: { wsKey: string, error: any, type: string, event?: any }) => void;
-  'update': (response: WsUpdate) => void;
-  'reconnect': () => void;
-  'close': () => void;
+  open: ({ wsKey, event }: { wsKey: string; event: any }) => void;
+  reconnected: ({ wsKey, event }: { wsKey: string; event: any }) => void;
+  response: (response: any) => void;
+  error: ({
+    error,
+    wsKey,
+    type,
+    event,
+  }: {
+    wsKey: string;
+    error: any;
+    type: string;
+    event?: any;
+  }) => void;
+  update: (response: WsUpdate) => void;
+  reconnect: () => void;
+  close: () => void;
 }
 
 export class WebsocketClient extends TypedEmitter<WebsocketEvents> {
-   options: WebsocketClientOptions;
+  options: WebsocketClientOptions;
   public wsStore: WsStore;
   private wsKey: WsKey;
 
@@ -45,7 +69,7 @@ export class WebsocketClient extends TypedEmitter<WebsocketEvents> {
       pingInterval: 10000,
       reconnectTimeout: 500,
       reconnectOnClose: true,
-      ...options
+      ...options,
     };
   }
 
@@ -58,17 +82,16 @@ export class WebsocketClient extends TypedEmitter<WebsocketEvents> {
    */
   public subscribe(wsTopics: WsTopic[] | WsTopic) {
     const mixedTopics = Array.isArray(wsTopics) ? wsTopics : [wsTopics];
-    const topics = mixedTopics.map(topic => {
+    const topics = mixedTopics.map((topic) => {
       return typeof topic === 'string' ? { channel: topic } : topic;
     });
 
-    topics.forEach(topic => this.wsStore.addTopic(
-      this.getWsKeyForTopic(topic),
-      topic
-    ));
+    topics.forEach((topic) =>
+      this.wsStore.addTopic(this.getWsKeyForTopic(topic), topic)
+    );
 
     // attempt to send subscription topic per websocket
-    this.wsStore.getKeys().forEach(wsKey => {
+    this.wsStore.getKeys().forEach((wsKey) => {
       // if connected, send subscription request
       if (this.wsStore.isConnectionState(wsKey, READY_STATE_CONNECTED)) {
         return this.requestSubscribeTopics(wsKey, topics);
@@ -89,19 +112,18 @@ export class WebsocketClient extends TypedEmitter<WebsocketEvents> {
    */
   public unsubscribe(wsTopics: WsTopic[] | WsTopic) {
     const mixedTopics = Array.isArray(wsTopics) ? wsTopics : [wsTopics];
-    const topics = mixedTopics.map(topic => {
+    const topics = mixedTopics.map((topic) => {
       return typeof topic === 'string' ? { channel: topic } : topic;
     });
 
-    topics.forEach(topic => this.wsStore.deleteTopic(
-      this.getWsKeyForTopic(topic),
-      topic
-    ));
+    topics.forEach((topic) =>
+      this.wsStore.deleteTopic(this.getWsKeyForTopic(topic), topic)
+    );
 
-    this.wsStore.getKeys().forEach(wsKey => {
+    this.wsStore.getKeys().forEach((wsKey) => {
       // unsubscribe request only necessary if active connection exists
       if (this.wsStore.isConnectionState(wsKey, READY_STATE_CONNECTED)) {
-        this.requestUnsubscribeTopics(wsKey, topics)
+        this.requestUnsubscribeTopics(wsKey, topics);
       }
     });
   }
@@ -122,15 +144,21 @@ export class WebsocketClient extends TypedEmitter<WebsocketEvents> {
     return [this.connect(this.wsKey)];
   }
 
-   async connect(wsKey: string): Promise<WebSocket | undefined> {
+  async connect(wsKey: string): Promise<WebSocket | undefined> {
     try {
       if (this.wsStore.isWsOpen(wsKey)) {
-        logger.error('Refused to connect to ws with existing active connection', { wsKey })
+        logger.error(
+          'Refused to connect to ws with existing active connection',
+          { wsKey }
+        );
         return this.wsStore.getWs(wsKey);
       }
 
       if (this.wsStore.isConnectionState(wsKey, READY_STATE_CONNECTING)) {
-        logger.error('Refused to connect to ws, connection attempt already active', { wsKey })
+        logger.error(
+          'Refused to connect to ws, connection attempt already active',
+          { wsKey }
+        );
         return;
       }
 
@@ -153,7 +181,7 @@ export class WebsocketClient extends TypedEmitter<WebsocketEvents> {
     }
   }
 
-   parseWsError(context: string, error: any, wsKey: string) {
+  parseWsError(context: string, error: any, wsKey: string) {
     const logContext = { wsKey, error };
     if (!error.message) {
       logger.error(`${context} due to unexpected error: `, logContext);
@@ -162,16 +190,24 @@ export class WebsocketClient extends TypedEmitter<WebsocketEvents> {
 
     switch (error.message) {
       case 'Unexpected server response: 401':
-        logger.error(`${context} due to 401 authorization failure.`, logContext);
+        logger.error(
+          `${context} due to 401 authorization failure.`,
+          logContext
+        );
         break;
 
       default:
-        logger.error(`${context} due to unexpected response error: ${error?.msg || error?.message || error}`, logContext);
+        logger.error(
+          `${context} due to unexpected response error: ${
+            error?.msg || error?.message || error
+          }`,
+          logContext
+        );
         break;
     }
   }
 
-   reconnectWithDelay(wsKey: string, connectionDelayMs: number) {
+  reconnectWithDelay(wsKey: string, connectionDelayMs: number) {
     this.clearPingTimer(wsKey);
     this.clearPongTimer(wsKey);
 
@@ -185,7 +221,7 @@ export class WebsocketClient extends TypedEmitter<WebsocketEvents> {
     }, connectionDelayMs);
   }
 
-   ping(wsKey: string) {
+  ping(wsKey: string) {
     const pingMessage = getWsPingMessage(wsKey);
     if (!pingMessage) {
       // dont need to send ping
@@ -195,10 +231,13 @@ export class WebsocketClient extends TypedEmitter<WebsocketEvents> {
     this.clearPongTimer(wsKey);
 
     logger.debug('Sending ping', { wsKey });
-    this.tryWsSend(wsKey, JSON.stringify(pingMessage))
+    this.tryWsSend(wsKey, JSON.stringify(pingMessage));
 
     this.wsStore.get(wsKey, true)!.activePongTimer = setTimeout(() => {
-      logger.info('Pong timeout - clearing timers & closing socket to reconnect', { wsKey });
+      logger.info(
+        'Pong timeout - clearing timers & closing socket to reconnect',
+        { wsKey }
+      );
       this.clearPingTimer(wsKey);
       this.clearPongTimer(wsKey);
       this.getWs(wsKey)?.close();
@@ -206,7 +245,7 @@ export class WebsocketClient extends TypedEmitter<WebsocketEvents> {
   }
 
   // Send a ping at intervals
-   clearPingTimer(wsKey: string) {
+  clearPingTimer(wsKey: string) {
     const wsState = this.wsStore.get(wsKey);
     if (wsState?.activePingTimer) {
       clearInterval(wsState.activePingTimer);
@@ -215,7 +254,7 @@ export class WebsocketClient extends TypedEmitter<WebsocketEvents> {
   }
 
   // Expect a pong within a time limit
-   clearPongTimer(wsKey: string) {
+  clearPongTimer(wsKey: string) {
     const wsState = this.wsStore.get(wsKey);
     if (wsState?.activePongTimer) {
       clearTimeout(wsState.activePongTimer);
@@ -226,12 +265,11 @@ export class WebsocketClient extends TypedEmitter<WebsocketEvents> {
   /**
    * Send WS message to subscribe to topics.
    */
-   requestSubscribeTopics(wsKey: string, topics: WsTopic[]) {
-
-    topics.forEach(topic => {
+  requestSubscribeTopics(wsKey: string, topics: WsTopic[]) {
+    topics.forEach((topic) => {
       const wsMessage = JSON.stringify({
         ...getWsSubscribeMessage(wsKey),
-        ...topic
+        ...topic,
       });
       this.tryWsSend(wsKey, wsMessage);
     });
@@ -240,40 +278,46 @@ export class WebsocketClient extends TypedEmitter<WebsocketEvents> {
   /**
    * Send WS message to unsubscribe from topics.
    */
-   requestUnsubscribeTopics(wsKey: string, topics: WsTopic[]) {
-    topics.forEach(topic => {
+  requestUnsubscribeTopics(wsKey: string, topics: WsTopic[]) {
+    topics.forEach((topic) => {
       const wsMessage = JSON.stringify({
         ...getWsUnsubscribeMessage(wsKey),
-        ...topic
+        ...topic,
       });
       this.tryWsSend(wsKey, wsMessage);
     });
   }
 
-   tryWsSend(wsKey: string, wsMessage: string) {
+  tryWsSend(wsKey: string, wsMessage: string) {
     try {
       logger.debug(`Sending upstream ws message: `, { wsMessage, wsKey });
       if (!wsKey) {
-        throw new Error('Cannot send message due to no known websocket for this wsKey');
+        throw new Error(
+          'Cannot send message due to no known websocket for this wsKey'
+        );
       }
       this.getWs(wsKey)?.send(wsMessage);
     } catch (e) {
-      logger.error(`Failed to send WS message`, { wsMessage, wsKey, exception: e });
+      logger.error(`Failed to send WS message`, {
+        wsMessage,
+        wsKey,
+        exception: e,
+      });
     }
   }
 
-   connectToWsUrl(url: string, wsKey: string): WebSocket {
-    logger.info(`Opening WS connection to URL: ${url}`, { wsKey })
+  connectToWsUrl(url: string, wsKey: string): WebSocket {
+    logger.info(`Opening WS connection to URL: ${url}`, { wsKey });
 
     const ws = new WebSocket(url);
-    ws.onopen = event => this.onWsOpen(event, wsKey);
-    ws.onmessage = event => this.onWsMessage(event, wsKey);
-    ws.onerror = event => this.onWsError(event, wsKey);
-    ws.onclose = event => this.onWsClose(event, wsKey);
-    ws.on('ping', event => {
+    ws.onopen = (event) => this.onWsOpen(event, wsKey);
+    ws.onmessage = (event) => this.onWsMessage(event, wsKey);
+    ws.onerror = (event) => this.onWsError(event, wsKey);
+    ws.onclose = (event) => this.onWsClose(event, wsKey);
+    ws.on('ping', (event) => {
       ws.pong();
       this.onPing(event, wsKey);
-    })
+    });
 
     return ws;
   }
@@ -282,11 +326,13 @@ export class WebsocketClient extends TypedEmitter<WebsocketEvents> {
     // extra optional ping handling
   }
 
-   async onWsOpen(event: any, wsKey: string) {
+  async onWsOpen(event: any, wsKey: string) {
     if (this.wsStore.isConnectionState(wsKey, READY_STATE_CONNECTING)) {
       logger.info('Websocket connected', { wsKey, livenet: this.isLivenet() });
       this.emit('open', { wsKey, event });
-    } else if (this.wsStore.isConnectionState(wsKey, READY_STATE_RECONNECTING)) {
+    } else if (
+      this.wsStore.isConnectionState(wsKey, READY_STATE_RECONNECTING)
+    ) {
       logger.info('Websocket reconnected', { wsKey });
       this.emit('reconnected', { wsKey, event });
     }
@@ -299,7 +345,6 @@ export class WebsocketClient extends TypedEmitter<WebsocketEvents> {
       () => this.ping(wsKey),
       this.options.pingInterval
     );
-
   }
 
   onWsMessage(event: any, wsKey: string) {
@@ -307,12 +352,18 @@ export class WebsocketClient extends TypedEmitter<WebsocketEvents> {
       this.clearPongTimer(wsKey);
       const msg = parseRawWsMessage(event);
       if (isSubscriptionResponse(wsKey, msg)) {
-        const subInfo = getSubscriptionInfo(wsKey, msg)
+        const subInfo = getSubscriptionInfo(wsKey, msg);
         this.wsStore.verifySubscription(wsKey, subInfo.key, subInfo.token);
-      } else if (isUpdateMessage(wsKey, msg, this.wsStore.getVerifiedTopics(wsKey))) {
+      } else if (
+        isUpdateMessage(wsKey, msg, this.wsStore.getVerifiedTopics(wsKey))
+      ) {
         logger.debug(`${wsKey}: update message received`, msg);
-        const updateMessage = parseUpdateMessage(wsKey, msg, this.wsStore.getVerifiedTopics(wsKey))
-        this.emit('update', updateMessage)
+        const updateMessage = parseUpdateMessage(
+          wsKey,
+          msg,
+          this.wsStore.getVerifiedTopics(wsKey)
+        );
+        this.emit('update', updateMessage);
       } else if (isHeartBeatMessage(wsKey, msg)) {
         const heartBeatMessage = getWsHeartBeatMessage(wsKey, msg);
         if (heartBeatMessage) {
@@ -324,7 +375,7 @@ export class WebsocketClient extends TypedEmitter<WebsocketEvents> {
       }
     } catch (error) {
       logger.debug('Parsing message exception: ', event);
-      this.emit('error', { wsKey, error, type: 'ON_WS_MESSAGE'});
+      this.emit('error', { wsKey, error, type: 'ON_WS_MESSAGE' });
     }
   }
 
@@ -338,7 +389,10 @@ export class WebsocketClient extends TypedEmitter<WebsocketEvents> {
   onWsClose(_event: any, wsKey: string) {
     logger.info(`${wsKey} websocket connection closed`, { wsKey });
 
-    if (this.wsStore.getConnectionState(wsKey) !== READY_STATE_CLOSING && this.options.reconnectOnClose) {
+    if (
+      this.wsStore.getConnectionState(wsKey) !== READY_STATE_CLOSING &&
+      this.options.reconnectOnClose
+    ) {
       this.reconnectWithDelay(wsKey, this.options.reconnectTimeout!);
       this.emit('reconnect');
     } else {
@@ -347,7 +401,7 @@ export class WebsocketClient extends TypedEmitter<WebsocketEvents> {
     }
   }
 
-   onWsMessageResponse(response: any, wsKey: string) {
+  onWsMessageResponse(response: any, wsKey: string) {
     if (isWsPong(response)) {
       logger.debug('Received pong', { wsKey });
       this.clearPongTimer(wsKey);
@@ -356,15 +410,15 @@ export class WebsocketClient extends TypedEmitter<WebsocketEvents> {
     }
   }
 
-   getWs(wsKey: string) {
+  getWs(wsKey: string) {
     return this.wsStore.getWs(wsKey);
   }
 
-   setWsState(wsKey: string, state: WsConnectionState) {
+  setWsState(wsKey: string, state: WsConnectionState) {
     this.wsStore.setConnectionState(wsKey, state);
   }
 
-   getWsKeyForTopic(topic: any) {
+  getWsKeyForTopic(topic: any) {
     return this.wsKey;
   }
 }

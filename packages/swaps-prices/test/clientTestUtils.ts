@@ -1,17 +1,19 @@
 // webSocketTestUtils.js
-import http from "http";
-import { startWebsocketServer } from "../src/services";
+import http from 'http';
+import { startWebsocketServer } from '../src/services';
 
 const startServer = (port: number) => {
   const server = http.createServer();
   startWebsocketServer(server);
   return new Promise((resolve) => {
-     server.listen(port, () => resolve(server));
+    server.listen(port, () => resolve(server));
   });
-}
+};
 
-const waitForSocketState = (socket: any, state: any) => waitFor(socket, 'readyState', state);
-const waitForHealthCheck = (socket: any, state: any) => waitFor(socket, 'isAlive', state);
+const waitForSocketState = (socket: any, state: any) =>
+  waitFor(socket, 'readyState', state);
+const waitForHealthCheck = (socket: any, state: any) =>
+  waitFor(socket, 'isAlive', state);
 
 const waitFor = (socket: any, type: 'readyState' | 'isAlive', state: any) => {
   return new Promise(function (resolve) {
@@ -24,7 +26,7 @@ const waitFor = (socket: any, type: 'readyState' | 'isAlive', state: any) => {
       }
     }, 5);
   });
-}
+};
 
 const delay = (n: number) => {
   return new Promise<void>(function (resolve, _reject) {
@@ -32,7 +34,7 @@ const delay = (n: number) => {
       resolve();
     }, n);
   });
-}
+};
 
 const parseRawWsMessage = (event: any): any => {
   if (typeof event === 'string') {
@@ -49,7 +51,12 @@ const parseRawWsMessage = (event: any): any => {
     return JSON.parse(event.data);
   }
   return event;
-}
+};
 
-export { startServer, waitForSocketState, waitForHealthCheck, parseRawWsMessage, delay };
-
+export {
+  startServer,
+  waitForSocketState,
+  waitForHealthCheck,
+  parseRawWsMessage,
+  delay,
+};

@@ -1,8 +1,8 @@
-name: Deploy swaps-keepers image to cloud registry 
+name: Deploy swaps-keepers image to cloud registry
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
 
 env:
   PROJECT_ID: ${{ secrets.KEEPERS_GKE_PROJECT }}
@@ -19,49 +19,49 @@ jobs:
       id-token: 'write'
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
-    - uses: vmware-tanzu/carvel-setup-action@v1
+      - uses: vmware-tanzu/carvel-setup-action@v1
 
-    # Configure Workload Identity Federation and generate an access token.
-    #- id: 'auth'
-    # name: 'Authenticate to Google Cloud'
-    # uses: 'google-github-actions/auth@v0'
-    # with:
+      # Configure Workload Identity Federation and generate an access token.
+      #- id: 'auth'
+      # name: 'Authenticate to Google Cloud'
+      # uses: 'google-github-actions/auth@v0'
+      # with:
       # workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
       # service_account: 'my-service-account@my-project.iam.gserviceaccount.com'
 
-    # Alternative option - authentication via credentials json
-    - id: 'auth'
-      uses: 'google-github-actions/auth@v0'
-      with:
-        credentials_json: '${{ secrets.KEEPERS_GKE_SA_KEY }}'
+      # Alternative option - authentication via credentials json
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{ secrets.KEEPERS_GKE_SA_KEY }}'
 
-    # Setup gcloud CLI
-    - name: Set up Cloud SDK
-      uses: google-github-actions/setup-gcloud@v0
+      # Setup gcloud CLI
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
 
-    # Configure Docker to use the gcloud command-line tool as a credential
-    # helper for authentication
-    - run: |-
-        gcloud --quiet auth configure-docker
+      # Configure Docker to use the gcloud command-line tool as a credential
+      # helper for authentication
+      - run: |-
+          gcloud --quiet auth configure-docker
 
-    - run: yarn install --frozen-lockfile
-    - run: npm run build
+      - run: yarn install --frozen-lockfile
+      - run: npm run build
 
-    # Build the Docker image
-    - name: Build
-      run: |-
-        docker build \
-          -f "./packages/swaps-keepers/Dockerfile" \
-          --tag "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA" \
-          --tag "latest" \
-          --build-arg GITHUB_SHA="$GITHUB_SHA" \
-          --build-arg GITHUB_REF="$GITHUB_REF" \
-          .
+      # Build the Docker image
+      - name: Build
+        run: |-
+          docker build \
+            -f "./packages/swaps-keepers/Dockerfile" \
+            --tag "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA" \
+            --tag "latest" \
+            --build-arg GITHUB_SHA="$GITHUB_SHA" \
+            --build-arg GITHUB_REF="$GITHUB_REF" \
+            .
 
-    # Push the Docker image to Google Container Registry
-    - name: Publish
-      run: |-
-        docker push "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA"
+      # Push the Docker image to Google Container Registry
+      - name: Publish
+        run: |-
+          docker push "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA"
