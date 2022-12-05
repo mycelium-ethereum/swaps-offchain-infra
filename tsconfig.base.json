@@ -1,5 +1,11 @@
 {
     "compileOnSave": false,
+    "ts-node": {
+        "compilerOptions": {
+            "module": "commonjs"
+        },
+        "require": ["tsconfig-paths/register"]
+    },
     "compilerOptions": {
         "rootDir": ".",
         "sourceMap": true,
@@ -17,7 +23,7 @@
         "baseUrl": ".",
         "paths": {
             "@mycelium-ethereum/swaps-js": ["packages/swaps-js/src/index.ts"],
-            "@mycelium-ethereum/test": ["packages/test/src/index.ts"]
+            "@mycelium-ethereum/swaps-js/*": ["packages/swaps-js/src/*"]
         }
     },
     "exclude": ["node_modules", "tmp"]

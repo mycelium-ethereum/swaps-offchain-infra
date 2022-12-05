@@ -3,6 +3,7 @@
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
     "sourceRoot": "packages/swaps-keepers/src",
     "projectType": "application",
+
     "targets": {
         "build": {
             "executor": "@nrwl/webpack:webpack",
@@ -52,6 +53,14 @@
             "options": {
                 "jestConfig": "packages/swaps-keepers/jest.config.ts",
                 "passWithNoTests": true
+            }
+        },
+        "dev": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    "TS_NODE_PROJECT=tsconfig.base.json ts-node-dev -r tsconfig-paths/register packages/swaps-keepers/src/main.ts"
+                ]
             }
         }
     },

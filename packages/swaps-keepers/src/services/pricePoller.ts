@@ -2,16 +2,18 @@ import { ethers } from "ethers";
 import fetch from "node-fetch";
 import {
     LabelledToken,
-    calcMedian,
     BinancePrice,
-    bitfinexBestAskPriceIndex,
-    bitfinexBestBidPriceIndex,
-    bitfinexSymbolIndex,
     BitfinexPrice,
     FTXPrice,
     CryptoComPrice,
     TokenPrices,
     ParsedTokenPrice,
+} from "@mycelium-ethereum/swaps-js/types";
+import {
+    calcMedian,
+    bitfinexBestAskPriceIndex,
+    bitfinexBestBidPriceIndex,
+    bitfinexSymbolIndex,
     binanceSymbolToKnownToken,
     ftxSymbolToKnownToken,
     bitfinexSymbolToKnownToken,
