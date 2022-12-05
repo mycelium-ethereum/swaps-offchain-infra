@@ -1,6 +1,6 @@
 import WebSocket from 'ws';
-import { KnownToken, WsTopic } from '@mycelium-ethereum/swaps-js';
-import { WsConnectionState } from '../entities/SocketClient';
+import { WsConnectionState } from './socketClient';
+import { KnownToken, WsTopic } from '../types';
 import { logger } from '../utils';
 
 

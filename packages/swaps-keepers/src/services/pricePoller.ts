@@ -19,9 +19,9 @@ import {
   tokensToBinanceQuery,
   tokensToBitfinexQuery,
   tokensToFTXQuery,
-  tokensToCryptoComQuery
+  tokensToCryptoComQuery,
+  logger
 } from '@mycelium-ethereum/swaps-js';
-import { logger } from '../utils/logger';
 
 // requirements
 // https://www.notion.so/tracerdao/Keeper-Requirements-0f41638b5e5043e888eaba48c7f13d4a#d2f8606651cb4e128fdd39fd2a6b3f5b

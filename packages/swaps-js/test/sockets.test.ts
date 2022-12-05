@@ -1,6 +1,7 @@
 import { ethers } from 'ethers';
-import { KnownToken, BinanceUpdateMessage, BitfinexSubscriptionMessage, BitfinexUpdateMessage, CoinbaseUpdateMessage, CryptoComUpdateMessage, FTXUpdateMessage, WsKey } from '@mycelium-ethereum/swaps-js'
-import { WebsocketClient } from '../src/entities/SocketClient';
+import { KnownToken, WsKey, FTXUpdateMessage, BinanceUpdateMessage, CryptoComUpdateMessage, CoinbaseUpdateMessage, BitfinexUpdateMessage, BitfinexSubscriptionMessage} from '../src/types'
+
+import { WebsocketClient } from '../src/utils/socketClient';
 // import { WS } from 'jest-websocket-mock';
 // import { createBinanceWsFeeds } from '../src/constants';
 // import { KnownToken } from '../src/types';
@@ -42,7 +43,9 @@ afterEach(() => {
   // (WebsocketClient as any).mockClear();
 });
 
-function constructSubscriptionMessage(wsKey: WsKey, overrides?: { market?: string, chanId?: string }): BitfinexSubscriptionMessage | undefined {
+type CEXSubscriptionMethod = BitfinexSubscriptionMessage | undefined;
+
+function constructSubscriptionMessage(wsKey: WsKey, overrides?: { market?: string, chanId?: string }): CEXSubscriptionMethod {
   if (wsKey === 'bitfinex') {
     return ({
       event: 'subscribed',
@@ -51,9 +54,11 @@ function constructSubscriptionMessage(wsKey: WsKey, overrides?: { market?: strin
       symbol: overrides?.market ?? 'tETHUSD'
     })
   }
+  return undefined;
 }
+type CEXUpdateMessage = FTXUpdateMessage | BinanceUpdateMessage | BitfinexUpdateMessage | CryptoComUpdateMessage | CoinbaseUpdateMessage | undefined;
 
-function constructUpdateMessage (wsKey: WsKey, lastPrice: string, bid: string, ask: string, overrides?: { market?: string, type?: string, channel?: string, stream?: string }): FTXUpdateMessage | BinanceUpdateMessage | BitfinexUpdateMessage | CryptoComUpdateMessage | CoinbaseUpdateMessage | undefined {
+function constructUpdateMessage (wsKey: WsKey, lastPrice: string, bid: string, ask: string, overrides?: { market?: string, type?: string, channel?: string, stream?: string }): CEXUpdateMessage {
   if (wsKey === 'binance') {
     return ({
       stream: overrides?.stream ?? 'test@ticker',
@@ -121,7 +126,8 @@ function constructUpdateMessage (wsKey: WsKey, lastPrice: string, bid: string, a
       best_bid: bid,
       best_ask: ask
     })
-  }
+  } // else
+  return undefined;
 }
 
 describe ("Message handling", () => {

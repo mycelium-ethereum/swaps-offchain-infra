@@ -1,8 +1,8 @@
 import WebSocket from 'ws';
 import { TypedEmitter } from 'tiny-typed-emitter';
-import type { WsUpdate, WsTopic, WsKey } from '@mycelium-ethereum/swaps-js';
-import { isWsPong, WSClientConfigurableOptions, WebsocketClientOptions, parseRawWsMessage, getWsSubscribeMessage, getWsUnsubscribeMessage, isUpdateMessage, parseUpdateMessage, getWsPingMessage, isSubscriptionResponse, getSubscriptionInfo, isHeartBeatMessage, getWsHeartBeatMessage } from '../utils/wsMessages';
-import WsStore from './WsStore';
+import { isWsPong, WSClientConfigurableOptions, WebsocketClientOptions, parseRawWsMessage, getWsSubscribeMessage, getWsUnsubscribeMessage, isUpdateMessage, parseUpdateMessage, getWsPingMessage, isSubscriptionResponse, getSubscriptionInfo, isHeartBeatMessage, getWsHeartBeatMessage } from './wsMessages';
+import WsStore from './wsStore';
+import type { WsUpdate, WsTopic, WsKey } from '../types';
 import { logger } from '../utils/logger'
 
 export const READY_STATE_INITIAL = 0;
@@ -149,6 +149,7 @@ export class WebsocketClient extends TypedEmitter<WebsocketEvents> {
       this.parseWsError('Connection failed', err, wsKey);
       this.reconnectWithDelay(wsKey, this.options.reconnectTimeout!);
       this.emit('error', { error: err, wsKey, type: 'CONNECTION_FAILED' });
+      return undefined;
     }
   }
 

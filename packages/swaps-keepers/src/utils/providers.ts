@@ -1,8 +1,7 @@
 require('dotenv').config()
 
 import { ethers } from "ethers";
-import { createProvider, attemptPromiseRecursively, delay } from '@mycelium-ethereum/swaps-js';
-import { logger } from "./logger";
+import { createProvider, attemptPromiseRecursively, delay, logger } from '@mycelium-ethereum/swaps-js';
 
 const fallbackRPC = process.env.FALLBACK_RPC_URL;
 export const fallbackProvider = fallbackRPC ? createProvider(fallbackRPC) : undefined;

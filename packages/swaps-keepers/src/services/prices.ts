@@ -4,9 +4,10 @@ import {
   /* createFtxWsFeeds, */
   createCryptoComWsFeeds,
   createCoinbaseWsFeeds,
-  KnownToken
+  KnownToken,
+  WebsocketClient,
 } from '@mycelium-ethereum/swaps-js';
-import { WebsocketClient, PriceStore } from '../entities'
+import { PriceStore } from '../services/priceStore';
 import { wsErrors } from '../utils/prometheus';
 
 const priceEmitter = new PriceStore();

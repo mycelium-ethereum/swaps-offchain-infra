@@ -1,6 +1,7 @@
 import { ethers } from "ethers"
-import { KnownToken, WsUpdate, binanceSymbolToKnownToken, bitfinexSymbolToKnownToken, coinbaseSymbolToKnownToken, cryptoComSymbolToKnownToken, ftxSymbolToKnownToken, knownTokenToBitfinexSymbols } from "@mycelium-ethereum/swaps-js"
-import { WsVerifiedTopicList } from "../entities/WsStore"
+import { binanceSymbolToKnownToken, bitfinexSymbolToKnownToken, coinbaseSymbolToKnownToken, cryptoComSymbolToKnownToken, ftxSymbolToKnownToken, knownTokenToBitfinexSymbols } from "../constants"
+import { WsVerifiedTopicList } from "./wsStore"
+import { KnownToken, WsUpdate } from "../types"
 
 export function getWsSubscribeMessage(wsKey: string) {
   if (wsKey === 'ftx') {

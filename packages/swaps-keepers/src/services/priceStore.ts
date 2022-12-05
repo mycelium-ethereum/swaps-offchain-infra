@@ -2,8 +2,7 @@ require('dotenv').config()
 
 import { ethers } from "ethers";
 import { TypedEmitter } from "tiny-typed-emitter";
-import { KnownToken, calcMedian, ParsedTokenPrice } from "@mycelium-ethereum/swaps-js";
-import { logger } from "../utils";
+import { KnownToken, calcMedian, ParsedTokenPrice, logger } from "@mycelium-ethereum/swaps-js";
 import { priceStored } from "../utils/prometheus";
 
 interface PriceEvents {
