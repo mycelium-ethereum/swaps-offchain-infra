@@ -8,11 +8,11 @@ import {
   timeoutError,
   isSupportedNetwork,
   ParsedTokenPrice,
-  PRICE_PRECISION
+  PRICE_PRECISION,
+  logger
 } from '@mycelium-ethereum/swaps-js';
 import { FastPriceFeed, FastPriceFeed__factory, VaultPriceFeed__factory } from '@mycelium-ethereum/perpetual-swaps-contracts';
 import { getPriceBits, orderPrices } from '@mycelium-ethereum/swaps-js';
-import { logger } from '../utils/logger'
 import { priceUpdateErrors } from '../utils/prometheus';
 import { callContract, fallbackProvider } from '../utils/providers';
 

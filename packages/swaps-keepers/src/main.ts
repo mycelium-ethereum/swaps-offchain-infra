@@ -3,17 +3,17 @@ require('dotenv').config()
 import client from "prom-client";
 import express from "express";
 import { ethers } from "ethers";
-import PositionKeeper from "./entities/PositionKeeper";
-import PriceKeeper from "./entities/PriceKeeper";
-import PricePoller from "./entities/PricePoller";
-import { handleClosedConnection , logger } from "./utils";
+import PositionKeeper from "./services/positionKeeper";
+import PriceKeeper from "./services/priceKeeper";
+import PricePoller from "./services/PricePoller";
+import PriceFeed, { UpdateResult } from "./services/priceFeed";
+import { handleClosedConnection } from "./utils";
 import { priceUpdates, checkedPrices, registerMetrics, priceFetchErrors, swapsIntervalError, ethBalance, priceThresholdExceeded } from "./utils/prometheus";
 import priceStore, { subscribeWsFeeds } from './services/prices';
 import { orderEmitter, streamOrders } from './services/orders';
-import PriceFeed, { UpdateResult } from "./entities/PriceFeed";
 
 import { FastPriceFeed, FastPriceFeed__factory, PositionRouter, PositionRouter__factory, VaultPriceFeed__factory } from "@mycelium-ethereum/perpetual-swaps-contracts";
-import { asyncInterval, createProvider, isWsProvider, checkProviderHealth, isSupportedNetwork } from "@mycelium-ethereum/swaps-js";
+import { asyncInterval, createProvider, isWsProvider, checkProviderHealth, isSupportedNetwork, logger } from "@mycelium-ethereum/swaps-js";
 
 if (!process.env.RPC_URL) {
   console.error('Must provide RPC_URL');
