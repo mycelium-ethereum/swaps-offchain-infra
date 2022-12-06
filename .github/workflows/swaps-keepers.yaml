@@ -2,7 +2,7 @@ name: Deploy swaps-keepers image to cloud registry
 
 on:
     push:
-        branches: [master]
+        branches: [main]
 
 env:
     PROJECT_ID: ${{ secrets.KEEPERS_GKE_PROJECT }}
