@@ -1,64 +1,64 @@
 name: Deploy prices
 
 on:
-  push:
-    tags:
-      - v*
+    push:
+        tags:
+            - v*
 
 jobs:
-  publish:
-    runs-on: ubuntu-latest
+    publish:
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+              with:
+                  fetch-depth: 0
 
-      - name: Get the two latest versions
-        run: |
-          CURRENT_VERSION=$(git tag -l "v*" --sort=-version:refname | head -n 1)
-          LAST_VERSION=$(git tag -l "v*" --sort=-version:refname | head -n 2 | awk 'NR == 2 { print $1 }')
-          echo "current_version=$(echo $CURRENT_VERSION)" >> $GITHUB_ENV
-          echo "last_version=$(echo $LAST_VERSION)" >> $GITHUB_ENV
-      - name: Setup NodeJS 16
-        uses: actions/setup-node@v1
-        with:
-          node-version: 16
+            - name: Get the two latest versions
+              run: |
+                  CURRENT_VERSION=$(git tag -l "v*" --sort=-version:refname | head -n 1)
+                  LAST_VERSION=$(git tag -l "v*" --sort=-version:refname | head -n 2 | awk 'NR == 2 { print $1 }')
+                  echo "current_version=$(echo $CURRENT_VERSION)" >> $GITHUB_ENV
+                  echo "last_version=$(echo $LAST_VERSION)" >> $GITHUB_ENV
+            - name: Setup NodeJS 16
+              uses: actions/setup-node@v1
+              with:
+                  node-version: 16
 
-      - name: Install yarn
-        run: npm install -g yarn
+            - name: Install yarn
+              run: npm install -g yarn
 
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
+            - name: Get yarn cache directory path
+              id: yarn-cache-dir-path
+              run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
 
-      - name: Cache yarn dependencies
-        uses: actions/cache@v2
-        id: yarn-cache
-        with:
-          path: |
-            ${{ steps.yarn-cache-dir-path.outputs.dir }}
-            **\node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-      - name: Install dependencies
-        if: steps.yarn-cache.outputs.cache-hit != 'true'
-        run: yarn install
+            - name: Cache yarn dependencies
+              uses: actions/cache@v2
+              id: yarn-cache
+              with:
+                  path: |
+                      ${{ steps.yarn-cache-dir-path.outputs.dir }}
+                      **\node_modules
+                  key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-yarn-
+            - name: Install dependencies
+              if: steps.yarn-cache.outputs.cache-hit != 'true'
+              run: yarn install
 
-      - name: Build libraries
-        run: |
-          yarn nx affected:build --prod --base=$last_version --head=$current_version
+            - name: Build libraries
+              run: |
+                  yarn nx affected:build --prod --base=$last_version --head=$current_version
 
-      - name: Publish components (Github packages)
-        run: |
-          for LIBRARY in $(yarn nx affected:libs --base=$last_version --head=$current_version --plain | awk 'NR > 2 && $1 != "Done" { print $1 }')
-          do
-            cd ./dist/libs/$LIBRARY
-            ls
-            cd ..
-            cd ..
-          done
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            - name: Publish components (Github packages)
+              run: |
+                  for LIBRARY in $(yarn nx affected:libs --base=$last_version --head=$current_version --plain | awk 'NR > 2 && $1 != "Done" { print $1 }')
+                  do
+                    cd ./dist/libs/$LIBRARY
+                    ls
+                    cd ..
+                    cd ..
+                  done
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

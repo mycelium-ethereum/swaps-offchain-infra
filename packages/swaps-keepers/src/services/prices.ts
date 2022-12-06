@@ -1,14 +1,14 @@
 import {
-  createBinanceWsFeeds,
-  createBitfinexWsFeeds,
-  /* createFtxWsFeeds, */
-  createCryptoComWsFeeds,
-  createCoinbaseWsFeeds,
-  KnownToken,
-  WebsocketClient,
-} from '@mycelium-ethereum/swaps-js';
-import { PriceStore } from '../services/priceStore';
-import { wsErrors } from '../utils/prometheus';
+    createBinanceWsFeeds,
+    createBitfinexWsFeeds,
+    /* createFtxWsFeeds, */
+    createCryptoComWsFeeds,
+    createCoinbaseWsFeeds,
+    KnownToken,
+    WebsocketClient,
+} from "@mycelium-ethereum/swaps-js";
+import { PriceStore } from "../services/priceStore";
+import { wsErrors } from "../utils/prometheus";
 
 const priceEmitter = new PriceStore();
 
@@ -30,62 +30,56 @@ const priceEmitter = new PriceStore();
 // };
 //
 const onError = (info: any) => {
-  console.error(info);
-  wsErrors.inc({ key: info.wsKey });
-  wsErrors.inc();
+    console.error(info);
+    wsErrors.inc({ key: info.wsKey });
+    wsErrors.inc();
 };
 
 // binance client setup
-const binanceClient = new WebsocketClient('binance', {
-  wsUrl: `wss://stream.binance.com/stream`,
+const binanceClient = new WebsocketClient("binance", {
+    wsUrl: `wss://stream.binance.com/stream`,
 });
-binanceClient.on('update', (data) => priceEmitter.storePrice('binance', data));
-binanceClient.on('error', onError);
+binanceClient.on("update", (data) => priceEmitter.storePrice("binance", data));
+binanceClient.on("error", onError);
 
 // crypto.com client setup
-const cryptoComClient = new WebsocketClient('cryptoCom', {
-  wsUrl: `wss://stream.crypto.com/v2/market`,
+const cryptoComClient = new WebsocketClient("cryptoCom", {
+    wsUrl: `wss://stream.crypto.com/v2/market`,
 });
-cryptoComClient.on('update', (data) =>
-  priceEmitter.storePrice('cryptoCom', data)
-);
-cryptoComClient.on('error', onError);
+cryptoComClient.on("update", (data) => priceEmitter.storePrice("cryptoCom", data));
+cryptoComClient.on("error", onError);
 
 // ftx client setup
-const ftxClient = new WebsocketClient('ftx', {
-  wsUrl: 'wss://ftx.com/ws/',
+const ftxClient = new WebsocketClient("ftx", {
+    wsUrl: "wss://ftx.com/ws/",
 });
-ftxClient.on('update', (data) => priceEmitter.storePrice('ftx', data));
-ftxClient.on('error', onError);
+ftxClient.on("update", (data) => priceEmitter.storePrice("ftx", data));
+ftxClient.on("error", onError);
 
 // bitfinexClient client setup
-const bitfinexClient = new WebsocketClient('bitfinex', {
-  wsUrl: 'wss://api-pub.bitfinex.com/ws/2',
+const bitfinexClient = new WebsocketClient("bitfinex", {
+    wsUrl: "wss://api-pub.bitfinex.com/ws/2",
 });
-bitfinexClient.on('update', (data) =>
-  priceEmitter.storePrice('bitfinex', data)
-);
-bitfinexClient.on('error', onError);
+bitfinexClient.on("update", (data) => priceEmitter.storePrice("bitfinex", data));
+bitfinexClient.on("error", onError);
 
 // coinbase client setup
-const coinbaseClient = new WebsocketClient('coinbase', {
-  wsUrl: 'wss://ws-feed.exchange.coinbase.com',
+const coinbaseClient = new WebsocketClient("coinbase", {
+    wsUrl: "wss://ws-feed.exchange.coinbase.com",
 });
-coinbaseClient.on('update', (data) =>
-  priceEmitter.storePrice('coinbase', data)
-);
-coinbaseClient.on('error', onError);
+coinbaseClient.on("update", (data) => priceEmitter.storePrice("coinbase", data));
+coinbaseClient.on("error", onError);
 
 /**
  * Subscribes each feed to a list of known tokens
  */
 export const subscribeWsFeeds = (tokens: KnownToken[]) => {
-  bitfinexClient.subscribe(createBitfinexWsFeeds(tokens));
-  // tempoarily pause streaming of FTX markets
-  // ftxClient.subscribe(createFtxWsFeeds(tokens))
-  binanceClient.subscribe(createBinanceWsFeeds(tokens));
-  cryptoComClient.subscribe(createCryptoComWsFeeds(tokens));
-  coinbaseClient.subscribe(createCoinbaseWsFeeds(tokens));
+    bitfinexClient.subscribe(createBitfinexWsFeeds(tokens));
+    // tempoarily pause streaming of FTX markets
+    // ftxClient.subscribe(createFtxWsFeeds(tokens))
+    binanceClient.subscribe(createBinanceWsFeeds(tokens));
+    cryptoComClient.subscribe(createCryptoComWsFeeds(tokens));
+    coinbaseClient.subscribe(createCoinbaseWsFeeds(tokens));
 };
 
 export default priceEmitter;

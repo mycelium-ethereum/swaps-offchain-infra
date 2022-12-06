@@ -1,14 +1,14 @@
 {
-  "name": "@mycelium-ethereum/swaps-js",
-  "version": "0.0.1",
-  "type": "commonjs",
-  "main": "./dist/src/index.js",
-  "typings": "./dist/src/index.d.ts",
-  "files": [
-    "dist"
-  ],
-  "scripts": {
-    "build": "tsc --outDir dist",
-    "test": "jest"
-  }
+    "name": "@mycelium-ethereum/swaps-js",
+    "version": "0.0.1",
+    "type": "commonjs",
+    "main": "./dist/src/index.js",
+    "typings": "./dist/src/index.d.ts",
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "build": "tsc --outDir dist",
+        "test": "jest"
+    }
 }
