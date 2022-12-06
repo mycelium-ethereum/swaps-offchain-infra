@@ -1,13 +1,13 @@
 name: Tag push
 
 on:
-    push:
+    pull_request:
         branches:
           - deployment-test
 
 jobs:
     build-test-release:
-        if: github.event.action == 'closed' && github.event.pull_request.merged == true
+      #if: github.event.action == 'closed' && github.event.pull_request.merged == true
         runs-on: ubuntu-latest
 
         steps:
