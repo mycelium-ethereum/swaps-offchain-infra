@@ -3,7 +3,7 @@ name: Deploy swaps prices image to k8's cluster
 on:
     push:
         tags:
-            - swaps-prices/v*
+            - 'swaps-prices/v*'
 
 env:
     GAR_LOCATION: us-central1
