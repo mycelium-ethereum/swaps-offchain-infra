@@ -7,12 +7,15 @@ on:
 
 jobs:
     build-test-release:
-        if: github.event.action == 'closed' && github.event.pull_request.merged == true
+      #if: github.event.action == 'closed' && github.event.pull_request.merged == true
         runs-on: ubuntu-latest
 
         steps:
             - name: Checkout
               uses: actions/checkout@v3
+              with:
+                ref: ${{ github.event.pull_request.head.ref }}
+                fetch-depth: 0
 
             - name: Setup NodeJS 16
               uses: actions/setup-node@v1
@@ -42,37 +45,27 @@ jobs:
 
             - name: Test
               run: |
-                  RUN=CI yarn nx run-many --target=test --all
-                  yarn nx run-many --target=lint --all
+                  RUN=CI yarn test
+                  yarn lint
             - name: Build components
               run: |
-                  yarn nx affected:build --prod --with-deps --base=main
+                  yarn build
             - name: Raise version of affected libraries
               run: |
-                  LATEST_TAG=$(git tag -l "v*" --sort=-version:refname | head -n 1)
-                  LIBS=$(yarn nx affected:libs --base=$LATEST_TAG --head=HEAD --plain | awk 'NR > 2 && $1 != "Done" { print $1 }')
-                  for LIBRARY in $LIBS
+                  PACKAGES=$(yarn nx affected:apps --base=origin/master --plain | awk 'NR > 2 && $1 != "Done" { print $1 }')
+                  git config user.email "admin@mycelium.ventures"
+                  git config user.name ${{ github.actor }}
+                  for PACKAGE in $PACKAGES
                   do
-                    cd ./libs/$LIBRARY
-                    npm version minor --no-git-tag-version --no-push
-                    echo "Bumping $LIBRARY"
+                    cd ./packages/$PACKAGE
+                    LATEST_TAG=$(git tag -l "$PACKAGE:v*" --sort=-version:refname | head -n 1)
+                    VERSION=$(npm version minor --no-git-tag-version --no-push)
+                    echo "Bumping $PACKAGE"
+                    git fetch
+                    git add --all
+                    git commit -m "Update $PACKAGE version to $VERSION"
+                    git tag -a $PACKAGE/$VERSION -m "$PACKAGE tag release $VERSION"
                     cd ..
                     cd ..
                   done
-                  npm version minor --no-git-tag-version --no-push
-            - name: get-npm-version
-              id: package-version
-              uses: martinbeentjes/npm-get-version-action@master
-
-            - name: Push changes
-              run: |
-                  git fetch
-                  git config user.email "vivid.ci@vonage.com"
-                  git config user.name "Vivid CI"
-                  git add --all
-                  git commit -m "update versions to ${{ steps.package-version.outputs.current-version }}"
-                  git push
-            - name: Tag release
-              run: |
-                  git tag -a v${{ steps.package-version.outputs.current-version }} -m "tag release v${{ steps.package-version.outputs.current-version }}"
                   git push --follow-tags
