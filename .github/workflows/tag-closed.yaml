@@ -50,8 +50,7 @@ jobs:
             - name: Raise version of affected libraries
               run: |
                   LATEST_TAG=$(git tag -l "v*" --sort=-version:refname | head -n 1)
-                  echo $LATEST_TAG
-                  PACKAGES=$(yarn nx affected:apps --base=master --head=HEAD --plain | awk 'NR > 2 && $1 != "Done" { print $1 }')
+                  PACKAGES=$(yarn nx affected:apps --base="master" --head=HEAD --plain | awk 'NR > 2 && $1 != "Done" { print $1 }')
                   for PACKAGE in $PACKAGES
                   do
                     cd ./packages/$PACKAGE
