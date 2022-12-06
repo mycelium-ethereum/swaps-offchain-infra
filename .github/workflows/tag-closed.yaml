@@ -1,9 +1,9 @@
 name: Tag push
 
 on:
-    pull_request:
+    push:
         branches:
-          - deployment-test
+          - master
 
 jobs:
     build-test-release:
