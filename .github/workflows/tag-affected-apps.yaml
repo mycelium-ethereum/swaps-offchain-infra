@@ -1,12 +1,15 @@
-name: Tag push
+name: Tag affected apps
 
 on:
     pull_request:
         types: closed
 
+env:
+    TARGET_BASE_REF: deployment-test
+
 jobs:
     tag-packages-release:
-        if: github.event.action == 'closed' && github.event.pull_request.merged == true && github.base_ref == 'deployment-test'
+        if: github.event.action == 'closed' && github.event.pull_request.merged == true && github.base_ref == $TARGET_BASE_REF
         runs-on: ubuntu-latest
 
         steps:
@@ -52,7 +55,7 @@ jobs:
                   yarn build
             - name: Raise version of affected libraries
               run: |
-                  PACKAGES=$(yarn nx affected:apps --base=origin/master --plain | awk 'NR > 2 && $1 != "Done" { print $1 }')
+                  PACKAGES=$(yarn nx affected:apps --base=origin/$TARGET_BASE_REF --plain | awk 'NR > 2 && $1 != "Done" { print $1 }')
                   echo ${{ github.base_ref }}
                   git config user.email "admin@mycelium.ventures"
                   git config user.name ${{ github.actor }}

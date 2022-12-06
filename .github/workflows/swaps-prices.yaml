@@ -1,4 +1,4 @@
-name: Deploy swaps prices image to k8's cluster
+name: Deploy swaps-prices to k8's cluster
 
 on:
     push:
@@ -56,17 +56,9 @@ jobs:
               if: steps.yarn-cache.outputs.cache-hit != 'true'
               run: yarn install
 
-            - name: Build components
+            - name: Build apps 
               run: |
                   yarn build
-
-            # Configure Workload Identity Federation and generate an access token.
-            #- id: 'auth'
-            # name: 'Authenticate to Google Cloud'
-            # uses: 'google-github-actions/auth@v0'
-            # with:
-            # workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
-            # service_account: 'my-service-account@my-project.iam.gserviceaccount.com'
 
             # Alternative option - authentication via credentials json
             - id: "auth"
@@ -88,7 +80,7 @@ jobs:
                   gcloud container clusters get-credentials "$GKE_CLUSTER" --zone "$GKE_ZONE"
 
             # Build the Docker image
-            - name: Build
+            - name: Build docker image
               run: |-
                   docker build \
                     -f "./packages/swaps-prices/Dockerfile" \
@@ -98,18 +90,20 @@ jobs:
                     .
 
             # Push the Docker image to Google Container Registry
-            - name: Publish
+            - name: Publish docker image
               run: |-
                   docker push "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA"
 
-            - name: Build
+            # Generate the appropriate deployment config
+            - name: Generate deployment config
               run: cd ./packages/swaps-prices/deployment && ./generateConfig.sh schema.yml "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA"
 
-                #- name: Apply
-              #run: kubectl apply -f deployment/output/deployment.yml
+            # Apply config to the k8's cluster
+            - name: Apply deployment config
+              run: kubectl apply -f deployment/output/deployment.yml
 
             # Deploy sample image to the GKE cluster
-            # - name: Deploy
-            # run: |-
-            #kubectl rollout status deployment/$DEPLOYMENT_NAME
-            #kubectl get services -o wide
+            - name: Rollout deployment
+              run: |-
+                kubectl rollout status deployment/$DEPLOYMENT_NAME
+                kubectl get services -o wide
