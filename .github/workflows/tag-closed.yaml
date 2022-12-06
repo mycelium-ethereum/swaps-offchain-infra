@@ -3,7 +3,7 @@ name: Tag push
 on:
     push:
         branches:
-          - master
+          - deployment-test
 
 jobs:
     build-test-release:
