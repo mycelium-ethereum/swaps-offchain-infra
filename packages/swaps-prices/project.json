@@ -12,7 +12,8 @@
                 "compiler": "tsc",
                 "outputPath": "dist/packages/swaps-prices",
                 "main": "packages/swaps-prices/src/main.ts",
-                "tsConfig": "packages/swaps-prices/tsconfig.app.json"
+                "tsConfig": "packages/swaps-prices/tsconfig.app.json",
+                "generatePackageJson": true
             },
             "configurations": {
                 "production": {
