@@ -9,7 +9,8 @@ env:
 
 jobs:
     tag-packages-release:
-        if: github.event.action == 'closed' && github.event.pull_request.merged == true && ${{ github.base_ref == env.DEPLOYMENT_BRANCH }}
+        # Unfortunately you cannot use env in if conditional https://github.com/actions/runner/issues/1189
+        if: github.event.action == 'closed' && github.event.pull_request.merged == true && github.base_ref == 'deployment-test'
         runs-on: ubuntu-latest
 
         steps:
@@ -55,7 +56,7 @@ jobs:
                   yarn build
             - name: Raise version of affected libraries
               run: |
-                  PACKAGES=$(yarn nx affected:apps --base=origin/$DEPLOYMENT_BRANCH --plain | awk 'NR > 2 && $1 != "Done" { print $1 }')
+                  PACKAGES=$(yarn nx affected:apps --base=origin/DEPLOYMENT_BRANCH --plain | awk 'NR > 2 && $1 != "Done" { print $1 }')
                   echo ${{ github.base_ref }}
                   git config user.email "admin@mycelium.ventures"
                   git config user.name ${{ github.actor }}
