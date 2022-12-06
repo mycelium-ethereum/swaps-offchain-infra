@@ -13,7 +13,7 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v3
               with:
-                ref: ${{ github.event.pull_request.head.ref }}
+                ref: ${{ github.base_ref }}
                 ssh-key: "${{ secrets.COMMIT_KEY }}"
                 fetch-depth: 0
 
@@ -53,6 +53,7 @@ jobs:
             - name: Raise version of affected libraries
               run: |
                   PACKAGES=$(yarn nx affected:apps --base=origin/master --plain | awk 'NR > 2 && $1 != "Done" { print $1 }')
+                  echo ${{ github.base_ref }}
                   git config user.email "admin@mycelium.ventures"
                   git config user.name ${{ github.actor }}
                   for PACKAGE in $PACKAGES
@@ -68,4 +69,4 @@ jobs:
                     cd ..
                     cd ..
                   done
-                  git push origin/deployment-test --follow-tags
+                  git push --follow-tags
