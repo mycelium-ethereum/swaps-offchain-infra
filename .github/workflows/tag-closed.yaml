@@ -68,5 +68,4 @@ jobs:
                     cd ..
                     cd ..
                   done
-                  npm version minor --no-git-tag-version --no-push
                   git push --follow-tags
