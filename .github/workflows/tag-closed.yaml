@@ -51,16 +51,17 @@ jobs:
               run: |
                   LATEST_TAG=$(git tag -l "v*" --sort=-version:refname | head -n 1)
                   echo $LATEST_TAG
-                  LIBS=$(yarn nx affected:libs --base=$LATEST_TAG --head=HEAD --plain | awk 'NR > 2 && $1 != "Done" { print $1 }')
-                  for LIBRARY in $LIBS
+                  PACKAGES=$(yarn nx affected:apps --base=master --head=HEAD --plain | awk 'NR > 2 && $1 != "Done" { print $1 }')
+                  for PACKAGE in $PACKAGES
                   do
-                    cd ./libs/$LIBRARY
+                    cd ./packages/$PACKAGE
                     npm version minor --no-git-tag-version --no-push
-                    echo "Bumping $LIBRARY"
+                    echo "Bumping $PACKAGE"
                     cd ..
                     cd ..
                   done
                   npm version minor --no-git-tag-version --no-push
+
             - name: get-npm-version
               id: package-version
               uses: martinbeentjes/npm-get-version-action@master
