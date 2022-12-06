@@ -1,13 +1,12 @@
 name: Tag push
 
 on:
-    push:
-        branches:
-          - deployment-test
+    pull_request:
+      types: closed
 
 jobs:
     build-test-release:
-      #if: github.event.action == 'closed' && github.event.pull_request.merged == true
+      if: github.event.action == 'closed' && github.event.pull_request.merged == true && github.base_ref == 'deployment-test'
         runs-on: ubuntu-latest
 
         steps:
