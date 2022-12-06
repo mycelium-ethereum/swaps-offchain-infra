@@ -7,7 +7,7 @@ on:
 
 env:
     GAR_LOCATION: us-central1
-    PROJECT_ID: ${{ secrets.PRICES_GKE_PROJECT }}
+    PROJECT_ID: ${{ secrets.PRICES_PROJECT_ID }}
     GKE_CLUSTER: swaps-prices-cluster # Add your cluster name here.
     GKE_ZONE: us-central1 # Add your cluster zone here.
     DEPLOYMENT_NAME: swaps-prices # Add your deployment name here.
