@@ -64,7 +64,7 @@ jobs:
                     git fetch
                     git add --all
                     git commit -m "Update $PACKAGE version to $VERSION"
-                    git tag -a $PACKAGE:v$VERSION -m "$PACKAGE tag release $VERSION"
+                    git tag -a $PACKAGE/$VERSION -m "$PACKAGE tag release $VERSION"
                     cd ..
                     cd ..
                   done
