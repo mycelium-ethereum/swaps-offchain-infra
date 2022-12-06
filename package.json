@@ -1,6 +1,6 @@
 {
     "name": "mycelium-ethereum",
-    "version": "0.11.0",
+    "version": "0.12.0",
     "license": "MIT",
     "scripts": {
         "dev:keepers": "npx nx run swaps-keepers:dev",
