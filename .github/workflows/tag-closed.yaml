@@ -42,11 +42,11 @@ jobs:
 
             - name: Test
               run: |
-                  RUN=CI yarn nx run-many --target=test --all
-                  yarn nx run-many --target=lint --all
+                  RUN=CI yarn test
+                  yarn lint
             - name: Build components
               run: |
-                  yarn nx affected:build --prod --with-deps --base=main
+                  yarn build
             - name: Raise version of affected libraries
               run: |
                   LATEST_TAG=$(git tag -l "v*" --sort=-version:refname | head -n 1)
@@ -67,8 +67,8 @@ jobs:
             - name: Push changes
               run: |
                   git fetch
-                  git config user.email "vivid.ci@vonage.com"
-                  git config user.name "Vivid CI"
+                  # git config user.email "vivid.ci@vonage.com"
+                  # git config user.name "Vivid CI"
                   git add --all
                   git commit -m "update versions to ${{ steps.package-version.outputs.current-version }}"
                   git push
