@@ -52,31 +52,21 @@ jobs:
                   yarn build
             - name: Raise version of affected libraries
               run: |
-                  LATEST_TAG=$(git tag -l "v*" --sort=-version:refname | head -n 1)
                   PACKAGES=$(yarn nx affected:apps --base=origin/master --plain | awk 'NR > 2 && $1 != "Done" { print $1 }')
+                  git config user.email "admin@mycelium.ventures"
+                  git config user.name ${{ github.actor }}
                   for PACKAGE in $PACKAGES
                   do
                     cd ./packages/$PACKAGE
-                    npm version minor --no-git-tag-version --no-push
+                    LATEST_TAG=$(git tag -l "$PACKAGE:v*" --sort=-version:refname | head -n 1)
+                    VERSION=$(npm version minor --no-git-tag-version --no-push)
                     echo "Bumping $PACKAGE"
+                    git fetch
+                    git add --all
+                    git commit -m "Update $PACKAGE version to $VERSION"
+                    git tag -a $PACKAGE:v$VERSION -m "$PACKAGE tag release $VERSION"
                     cd ..
                     cd ..
                   done
                   npm version minor --no-git-tag-version --no-push
-
-            - name: get-npm-version
-              id: package-version
-              uses: martinbeentjes/npm-get-version-action@master
-
-            - name: Push changes
-              run: |
-                  git fetch
-                  git config user.email "admin@mycelium.ventures"
-                  git config user.name ${{ github.actor }}
-                  git add --all
-                  git commit -m "update versions to ${{ steps.package-version.outputs.current-version }}"
-                  git push
-            - name: Tag release
-              run: |
-                  git tag -a v${{ steps.package-version.outputs.current-version }} -m "tag release v${{ steps.package-version.outputs.current-version }}"
                   git push --follow-tags
