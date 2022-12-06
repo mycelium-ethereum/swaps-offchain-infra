@@ -9,7 +9,7 @@ env:
 
 jobs:
     tag-packages-release:
-        if: github.event.action == 'closed' && github.event.pull_request.merged == true && github.base_ref == $DEPLOYMENT_BRANCH
+        if: github.event.action == 'closed' && github.event.pull_request.merged == true && github.base_ref == ${{ env.DEPLOYMENT_BRANCH }}
         runs-on: ubuntu-latest
 
         steps:
