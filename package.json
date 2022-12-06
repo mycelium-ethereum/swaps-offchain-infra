@@ -1,6 +1,10 @@
 {
     "name": "mycelium-ethereum",
+<<<<<<< HEAD
+    "version": "0.3.0",
+=======
     "version": "0.4.0",
+>>>>>>> b13eec4346f84348fb8172c3b772d603bf54b095
     "license": "MIT",
     "scripts": {
         "dev:keepers": "npx nx run swaps-keepers:dev",
