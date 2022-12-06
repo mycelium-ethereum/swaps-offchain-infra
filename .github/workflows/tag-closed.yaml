@@ -71,8 +71,8 @@ jobs:
             - name: Push changes
               run: |
                   git fetch
-                  # git config user.email "vivid.ci@vonage.com"
-                  # git config user.name "Vivid CI"
+                  git config user.email "admin@mycelium.ventures"
+                  git config user.name ${{ github.actor }}
                   git add --all
                   git commit -m "update versions to ${{ steps.package-version.outputs.current-version }}"
                   git push
