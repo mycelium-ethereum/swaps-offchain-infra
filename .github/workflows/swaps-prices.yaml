@@ -60,7 +60,7 @@ jobs:
             - name: Build
               run: |-
                   docker build \
-                    -f "./deployment/swaps-prices/Dockerfile" \
+                    -f "./packages/swaps-prices/Dockerfile" \
                     --tag "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA" \
                     --build-arg GITHUB_SHA="$GITHUB_SHA" \
                     --build-arg GITHUB_REF="$GITHUB_REF" \
