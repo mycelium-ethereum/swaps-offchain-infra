@@ -14,6 +14,7 @@ export async function getRequestQueueLengths(positionRouter: PositionRouter): Pr
         [],
         "positionRouter.getRequestQueueLengths()"
     );
+    console.log("test update");
     return {
         startIndexForIncreasePositions: queueLengths[0].toNumber(),
         endIndexForIncreasePositions: queueLengths[1].toNumber(),
