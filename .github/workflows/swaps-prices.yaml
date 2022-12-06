@@ -3,7 +3,7 @@ name: Deploy swaps prices image to k8's cluster
 on:
     push:
         branches:
-            - master
+            - main
 
 env:
     GAR_LOCATION: us-central1
