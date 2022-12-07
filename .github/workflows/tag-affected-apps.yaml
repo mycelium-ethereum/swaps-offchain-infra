@@ -5,7 +5,7 @@ on:
         types: closed
 
 env:
-    DEPLOYMENT_BRANCH: deployment-branch
+    DEPLOYMENT_BRANCH: deployment-test
 
 jobs:
     tag-packages-release:
