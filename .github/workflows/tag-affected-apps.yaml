@@ -5,7 +5,7 @@ on:
         types: closed
 
 env:
-    DEPLOYMENT_BRANCH: deployment-test
+    DEPLOYMENT_BRANCH: deployment-branch-test
 
 jobs:
     tag-packages-release:
@@ -57,7 +57,7 @@ jobs:
             - name: Raise version of affected libraries
               run: |
                   # Since checkout is referencing the base_ref need to check pull_request origin
-                  PACKAGES=$(yarn nx affected:apps --base=origin/${{ github.ref_name }} --plain | awk 'NR > 2 && $1 != "Done" { print $1 }')
+                  PACKAGES=$(yarn nx affected:apps --base=origin/$DEPLOYMENT_BRANCH --plain | awk 'NR > 2 && $1 != "Done" { print $1 }')
                   echo ${{ github.base_ref }}
                   git config user.email "admin@mycelium.ventures"
                   git config user.name ${{ github.actor }}
