@@ -40,11 +40,11 @@ jobs:
             - run: |-
                   gcloud --quiet auth configure-docker
 
-            - run: yarn install --frozen-lockfile
-            - run: npm run build
+            - name: Cache install packages
+              uses: ./.github/actions/cache-install
 
             # Build the Docker image
-            - name: Build
+            - name: Build docker image
               run: |-
                   docker build \
                     -f "./packages/swaps-keepers/Dockerfile" \
@@ -55,6 +55,6 @@ jobs:
                     .
 
             # Push the Docker image to Google Container Registry
-            - name: Publish
+            - name: Publish docker image
               run: |-
                   docker push "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA"

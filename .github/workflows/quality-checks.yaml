@@ -15,7 +15,7 @@ jobs:
               with:
                   fetch-depth: 0
 
-            - name: Run quality checks
+            - name: Cache install packages
               uses: ./.github/actions/cache-install
 
             - name: Test
