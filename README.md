@@ -21,7 +21,7 @@ This will install all dependencies required by all packages. During the build st
 ## Running packages
 
 [Task running](https://nx.dev/core-features/run-tasks#run-tasks) in Nx can be done on an individual or many scale. For example to running
-`npx nx run build swaps-js` will only build the `swaps-js` package and all its dependencies (building `swaps-prices` will also build `swaps-js` as its a dependency). To run commands across many packages use [nx run-many](https://nx.dev/core-features/run-tasks#run-everything) eg. `npx nx run-many --target=build`. Where `--target` can be replaced with any command. Nx will go through each of the packages run the target script on any of the packages which include it in its `project.json` configuration.
+`npx nx run build swaps-js` will only build the `swaps-js` package and all its dependencies (building `swaps-prices` will also build `swaps-js` as its a dependency). To run commands across many packages use [nx run-many](https://nx.dev/core-features/run-tasks#run-everything) eg. `npx nx run-many --target=build`. Where `--target` can be replaced with any command. Nx will go through each of the packages and run the target script on any of the packages which include it in its `project.json` configuration.
 
 # Packages
 
