@@ -5,7 +5,7 @@
     "scripts": {
         "dev:keepers": "npx nx run swaps-keepers:dev",
         "dev:prices": "npx nx run swaps-prices:dev",
-        "dev:siwe": "npx nx run siwe-chat-box:dev",
+        "dev:siwe": "npx nx run siwe-chat-box-backend:dev",
         "build": "npx nx affected --target=build --all",
         "test": "npx nx affected --target=test --all",
         "lint": "npx nx affected --target=lint --all",
