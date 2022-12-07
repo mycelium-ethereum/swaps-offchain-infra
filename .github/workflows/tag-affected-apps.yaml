@@ -58,7 +58,7 @@ jobs:
             - name: Fetch affected packages
               run: |
                   # Since checkout is referencing the base_ref need to check pull_request origin
-                PACKAGES=$(yarn nx affected:apps --base=$DEPLOYMENT_BRANCH --plain | awk 'NR > 2 && $1 != "Done" { print $1 }')
+                  PACKAGES=$(yarn nx affected:apps --base=$DEPLOYMENT_BRANCH --plain | awk 'NR > 2 && $1 != "Done" { print $1 }')
 
             - name: Checkout base branch
               uses: actions/checkout@v3
