@@ -1,7 +1,7 @@
 apiVersion: networking.gke.io/v1
 kind: ManagedCertificate
 metadata:
-  name: swaps-prices-cert
+    name: swaps-prices-cert
 spec:
-  domains:
-    - pricing.mycelium.xyz
+    domains:
+        - pricing.mycelium.xyz

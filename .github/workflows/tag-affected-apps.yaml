@@ -17,9 +17,9 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v3
               with:
-                ref: ${{ github.base_ref }}
-                ssh-key: "${{ secrets.COMMIT_KEY }}"
-                fetch-depth: 0
+                  ref: ${{ github.base_ref }}
+                  ssh-key: "${{ secrets.COMMIT_KEY }}"
+                  fetch-depth: 0
 
             - name: Cache install packages
               uses: ./.github/actions/cache-install

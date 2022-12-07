@@ -11,7 +11,7 @@ import {
     PRICE_PRECISION,
     logger,
     getPriceBits,
-    orderPrices
+    orderPrices,
 } from "@mycelium-ethereum/swaps-js";
 import {
     FastPriceFeed,

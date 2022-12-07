@@ -3,7 +3,7 @@
 apiVersion: networking.gke.io/v1
 kind: ManagedCertificate
 metadata:
-  name: #@ data.values.certName
+    name: #@ data.values.certName
 spec:
-  domains:
-    - #@ data.values.certDomain
+    domains:
+        -  #@ data.values.certDomain
