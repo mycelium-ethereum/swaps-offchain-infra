@@ -16,4 +16,11 @@ jobs:
                   fetch-depth: 0
 
             - name: Run quality checks
-              uses: ./.github/actions/quality-checks
+              uses: ./.github/actions/cache-install
+
+            - name: Test
+              run: |
+                  RUN=CI yarn test
+                  yarn lint
+                  yarn format:check
+                  yarn build

@@ -1,3 +1,7 @@
+name: "Cache install node dependencies"
+description: "Yarn installs with cached folder"
+
+runs:
 runs:
     using: "composite"
     steps:
