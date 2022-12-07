@@ -56,7 +56,7 @@ jobs:
                   yarn build
             - name: Raise version of affected libraries
               run: |
-                  PACKAGES=$(yarn nx affected:apps --base=origin/DEPLOYMENT_BRANCH --plain | awk 'NR > 2 && $1 != "Done" { print $1 }')
+                  PACKAGES=$(yarn nx affected:apps --base=origin/$DEPLOYMENT_BRANCH --plain | awk 'NR > 2 && $1 != "Done" { print $1 }')
                   echo ${{ github.base_ref }}
                   git config user.email "admin@mycelium.ventures"
                   git config user.name ${{ github.actor }}
