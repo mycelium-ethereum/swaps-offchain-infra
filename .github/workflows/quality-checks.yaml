@@ -21,7 +21,7 @@ jobs:
             - name: Check formatting
               run: |
                   yarn nx affected --target=lint --all
-                  yarn nx format:check --base=${{ github.base_ref }} --all
+                  yarn nx format:check --all
 
             - name: Test
               run: |
