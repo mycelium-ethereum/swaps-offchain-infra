@@ -20,13 +20,13 @@ jobs:
 
             - name: Check formatting
               run: |
-                  yarn nx affected --target=lint --all --base=${{ github.base_ref }}
-                  yarn nx format:check --base=${{ github.base_ref }}
+                  yarn nx affected --target=lint --all
+                  yarn nx format:check --base=${{ github.base_ref }} --all
 
             - name: Test
               run: |
-                  yarn nx affected --target=test --all --base=${{ github.base_ref }}
+                  yarn nx affected --target=test --all
 
             - name: Build
               run: |
-                  yarn nx affected --target=build --all --base=${{ github.base_ref }}
+                  yarn nx affected --target=build --all
