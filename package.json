@@ -11,8 +11,8 @@
         "format": "npx nx format:write",
         "format:check": "npx nx format:check",
         "build:swaps-js": "npx nx build swaps-js",
-        "generate:lib": "./tools/generators/lib.sh",
-        "generate:node": "./tools/generators/node-app.sh"
+        "generate:lib": "npx nx generate @nrwl/js:library $1 --importPath @mycelium-ethereum/$1",
+        "generate:node": "npx nx generate @nrwl/node:app $1 --importPath @mycelium-ethereum/$1"
     },
     "private": true,
     "dependencies": {
