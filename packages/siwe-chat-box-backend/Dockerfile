@@ -1,6 +1,8 @@
-FROM node:14
-WORKDIR /app
+FROM node:18
+
+COPY ./dist/packages/siwe-chat-box-backend .
 COPY package.json .
-RUN npm install
-COPY . ./
-CMD ["npm", "start"]
+
+RUN npm install --omit=dev
+
+CMD node ./main.js

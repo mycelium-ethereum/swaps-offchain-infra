@@ -1,7 +1,9 @@
 version: "3"
 services:
     chatbox-app:
-        build: .
+        build:
+            dockerfile: ./packages/siwe-chat-box-backend/Dockerfile
+            context: ../../
         ports:
             - "${PORT}:${PORT}"
         volumes:
@@ -12,7 +14,6 @@ services:
             POSTGRES_PORT: 5432
         env_file:
             - ./.env
-        command: npm start
         depends_on:
             - postgres-db
 
