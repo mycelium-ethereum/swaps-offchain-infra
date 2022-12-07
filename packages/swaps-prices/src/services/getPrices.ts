@@ -31,6 +31,7 @@ export const getPrices = async ({ network }: GetPriceArgs) => {
     }
 
     const knownTokens = networkTokens[network];
+
     const tokens = {};
 
     knownTokens.forEach((token) => {
