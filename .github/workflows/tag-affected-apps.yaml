@@ -1,0 +1,54 @@
+name: Tag affected apps
+
+on:
+    pull_request:
+        types: closed
+
+env:
+    DEPLOYMENT_BRANCH: master
+
+jobs:
+    tag-packages-release:
+        # Unfortunately you cannot use env in if conditional https://github.com/actions/runner/issues/1189
+        if: github.event.action == 'closed' && github.event.pull_request.merged == true && github.base_ref == 'master'
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+              with:
+                  ref: ${{ github.base_ref }}
+                  ssh-key: "${{ secrets.COMMIT_KEY }}"
+                  fetch-depth: 0
+
+            - name: Cache install packages
+              uses: ./.github/actions/cache-install
+
+            - name: Test
+              run: |
+                  RUN=CI yarn test
+                  yarn lint
+
+            - name: Build components
+              run: |
+                  yarn nx affected:build --prod --with-deps --base=$DEPLOYMENT_BRANCH~1 --head=$DEPLOYMENT_BRANCH
+
+            - name: Raise version of affected libraries
+              run: |
+                  PACKAGES=$(yarn nx affected:apps --base=$DEPLOYMENT_BRANCH~1 --head=$DEPLOYMENT_BRANCH --plain | awk 'NR > 2 && $1 != "Done" { print $1 }')
+                  git config user.email "admin@mycelium.ventures"
+                  git config user.name ${{ github.actor }}
+                  for PACKAGE in $PACKAGES
+                  do
+                    cd ./packages/$PACKAGE
+                    LATEST_TAG=$(git tag -l "$PACKAGE:v*" --sort=-version:refname | head -n 1)
+                    VERSION=$(npm version minor --no-git-tag-version --no-push)
+                    echo "Bumping $PACKAGE"
+                    git fetch
+                    git add --all
+                    git commit -m "Update $PACKAGE version to $VERSION"
+                    git tag -a $PACKAGE/$VERSION -m "$PACKAGE tag release $VERSION"
+                    cd ..
+                    cd ..
+                  done
+                  git push --follow-tags

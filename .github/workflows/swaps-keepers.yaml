@@ -2,10 +2,11 @@ name: Deploy swaps-keepers image to cloud registry
 
 on:
     push:
-        branches: [master]
+        tags:
+            - "swaps-keepers/v*"
 
 env:
-    PROJECT_ID: ${{ secrets.KEEPERS_GKE_PROJECT }}
+    PROJECT_ID: ${{ secrets.KEEPERS_PROJECT_ID }}
     IMAGE: swaps-keepers
 
 jobs:
@@ -24,19 +25,11 @@ jobs:
 
             - uses: vmware-tanzu/carvel-setup-action@v1
 
-            # Configure Workload Identity Federation and generate an access token.
-            #- id: 'auth'
-            # name: 'Authenticate to Google Cloud'
-            # uses: 'google-github-actions/auth@v0'
-            # with:
-            # workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
-            # service_account: 'my-service-account@my-project.iam.gserviceaccount.com'
-
             # Alternative option - authentication via credentials json
             - id: "auth"
               uses: "google-github-actions/auth@v0"
               with:
-                  credentials_json: "${{ secrets.KEEPERS_GKE_SA_KEY }}"
+                  credentials_json: "${{ secrets.KEEPERS_SA_KEY }}"
 
             # Setup gcloud CLI
             - name: Set up Cloud SDK
@@ -47,11 +40,11 @@ jobs:
             - run: |-
                   gcloud --quiet auth configure-docker
 
-            - run: yarn install --frozen-lockfile
-            - run: npm run build
+            - name: Cache install packages
+              uses: ./.github/actions/cache-install
 
             # Build the Docker image
-            - name: Build
+            - name: Build docker image
               run: |-
                   docker build \
                     -f "./packages/swaps-keepers/Dockerfile" \
@@ -62,6 +55,6 @@ jobs:
                     .
 
             # Push the Docker image to Google Container Registry
-            - name: Publish
+            - name: Publish docker image
               run: |-
                   docker push "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA"

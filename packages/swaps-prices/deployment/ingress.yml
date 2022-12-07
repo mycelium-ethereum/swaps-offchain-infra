@@ -1,0 +1,22 @@
+#@ load("@ytt:data", "data")
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+    name: #@ data.values.ingressName
+    annotations:
+        #! SSL support for ingress
+        kubernetes.io/ingress.global-static-ip-name: #@ data.values.ipName
+        networking.gke.io/managed-certificates: #@ data.values.certName
+        kubernetes.io/ingress.class: "gce"
+spec:
+    rules:
+        - http:
+              paths:
+                  - path: /*
+                    pathType: ImplementationSpecific
+                    backend:
+                        service:
+                            name: #@ data.values.serviceName
+                            port:
+                                number: 3030

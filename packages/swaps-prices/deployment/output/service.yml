@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: swaps-prices-service
+spec:
+    type: NodePort
+    selector:
+        app: swaps-prices
+    ports:
+        - protocol: TCP
+          port: 3030
+          targetPort: 3030
+          nodePort: 32000

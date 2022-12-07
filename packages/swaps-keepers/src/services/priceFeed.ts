@@ -10,13 +10,14 @@ import {
     ParsedTokenPrice,
     PRICE_PRECISION,
     logger,
+    getPriceBits,
+    orderPrices,
 } from "@mycelium-ethereum/swaps-js";
 import {
     FastPriceFeed,
     FastPriceFeed__factory,
     VaultPriceFeed__factory,
 } from "@mycelium-ethereum/perpetual-swaps-contracts";
-import { getPriceBits, orderPrices } from "@mycelium-ethereum/swaps-js";
 import { priceUpdateErrors } from "../utils/prometheus";
 import { callContract, fallbackProvider } from "../utils/providers";
 

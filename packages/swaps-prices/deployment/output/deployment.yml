@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: swaps-prices
+spec:
+    replicas: 2
+    selector:
+        matchLabels:
+            app: swaps-prices
+    strategy:
+        rollingUpdate:
+            maxSurge: 1
+            maxUnavailable: 1
+    minReadySeconds: 5
+    template:
+        metadata:
+            labels:
+                app: swaps-prices
+        spec:
+            containers:
+                - name: swaps-prices
+                  image: test
+                  ports:
+                      - containerPort: 3030
+                  resources:
+                      requests:
+                          cpu: 100m
+                      limits:
+                          cpu: 100m
