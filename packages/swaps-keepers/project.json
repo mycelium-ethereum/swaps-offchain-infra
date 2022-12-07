@@ -13,7 +13,8 @@
                 "compiler": "tsc",
                 "outputPath": "dist/packages/swaps-keepers",
                 "main": "packages/swaps-keepers/src/main.ts",
-                "tsConfig": "packages/swaps-keepers/tsconfig.app.json"
+                "tsConfig": "packages/swaps-keepers/tsconfig.app.json",
+                "generatePackageJson": true
             },
             "configurations": {
                 "production": {
