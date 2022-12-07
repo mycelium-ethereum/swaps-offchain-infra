@@ -96,11 +96,13 @@ jobs:
 
             # Generate the appropriate deployment config
             - name: Generate deployment config
-              run: cd ./packages/swaps-prices/deployment && ./generateConfig.sh schema.yml "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA"
+              run: |-
+                cd ./packages/swaps-prices/deployment && ./generateConfig.sh schema.yml "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA"
 
             # Apply config to the k8's cluster
             - name: Apply deployment config
-              run: kubectl apply -f deployment/output/deployment.yml
+              run: |-
+                kubectl apply -f ./output/deployment.yml
 
             # Deploy sample image to the GKE cluster
             - name: Rollout deployment
