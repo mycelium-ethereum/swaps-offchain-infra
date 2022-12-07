@@ -3,7 +3,7 @@ name: Deploy swaps-prices to k8's cluster
 on:
     push:
         tags:
-            - 'swaps-prices/v*'
+            - "swaps-prices/v*"
 
 env:
     GAR_LOCATION: us-central1
@@ -29,34 +29,10 @@ jobs:
 
             - uses: vmware-tanzu/carvel-setup-action@v1
 
-            - name: Setup NodeJS 16
-              uses: actions/setup-node@v1
-              with:
-                  node-version: 16
+            - name: Cache install packages
+              uses: ./.github/actions/cache-install
 
-            - name: Install yarn
-              run: npm install -g yarn
-
-            - name: Get yarn cache directory path
-              id: yarn-cache-dir-path
-              run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
-
-            - name: Cache yarn dependencies
-              uses: actions/cache@v2
-              id: yarn-cache
-              with:
-                  path: |
-                      ${{ steps.yarn-cache-dir-path.outputs.dir }}
-                      **\node_modules
-                  key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-                  restore-keys: |
-                      ${{ runner.os }}-yarn-
-
-            - name: Install dependencies
-              if: steps.yarn-cache.outputs.cache-hit != 'true'
-              run: yarn install
-
-            - name: Build apps 
+            - name: Build apps
               run: |
                   yarn build
 
@@ -97,11 +73,11 @@ jobs:
             # Generate the appropriate deployment config
             - name: Generate and apply the deployment config
               run: |-
-                cd ./packages/swaps-prices/deployment && ./generateConfig.sh schema.yml "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA"
-                kubectl apply -f ./output/deployment.yml
+                  cd ./packages/swaps-prices/deployment && ./generateConfig.sh schema.yml "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA"
+                  kubectl apply -f ./output/deployment.yml
 
             # Deploy sample image to the GKE cluster
             - name: Rollout deployment
               run: |-
-                kubectl rollout status deployment/$DEPLOYMENT_NAME
-                kubectl get services -o wide
+                  kubectl rollout status deployment/$DEPLOYMENT_NAME
+                  kubectl get services -o wide

@@ -1,0 +1,35 @@
+name: "Cache install node dependencies"
+description: "Yarn installs with cached folder"
+
+runs:
+    using: "composite"
+    steps:
+        - name: Setup NodeJS 16
+          uses: actions/setup-node@v1
+          with:
+              node-version: 16
+
+        - name: Install yarn
+          run: npm install -g yarn
+          shell: bash
+
+        - name: Get yarn cache directory path
+          id: yarn-cache-dir-path
+          run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
+          shell: bash
+
+        - name: Cache yarn dependencies
+          uses: actions/cache@v2
+          id: yarn-cache
+          with:
+              path: |
+                  ${{ steps.yarn-cache-dir-path.outputs.dir }}
+                  **\node_modules
+              key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+              restore-keys: |
+                  ${{ runner.os }}-yarn-
+
+        - name: Install dependencies
+          if: steps.yarn-cache.outputs.cache-hit != 'true'
+          run: yarn install
+          shell: bash
