@@ -43,6 +43,10 @@ jobs:
             - name: Cache install packages
               uses: ./.github/actions/cache-install
 
+            - name: Build apps
+              run: |
+                  yarn build
+
             # Build the Docker image
             - name: Build docker image
               run: |-
