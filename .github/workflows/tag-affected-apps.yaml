@@ -5,12 +5,12 @@ on:
         types: closed
 
 env:
-    DEPLOYMENT_BRANCH: deployment-test
+    DEPLOYMENT_BRANCH: master
 
 jobs:
     tag-packages-release:
         # Unfortunately you cannot use env in if conditional https://github.com/actions/runner/issues/1189
-        if: github.event.action == 'closed' && github.event.pull_request.merged == true && github.base_ref == 'deployment-test'
+        if: github.event.action == 'closed' && github.event.pull_request.merged == true && github.base_ref == 'master'
         runs-on: ubuntu-latest
 
         steps:
