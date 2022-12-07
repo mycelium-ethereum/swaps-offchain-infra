@@ -17,6 +17,7 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v3
               with:
+                ref: ${{ github.base_ref }}
                 ssh-key: "${{ secrets.COMMIT_KEY }}"
                 fetch-depth: 0
 
@@ -53,22 +54,11 @@ jobs:
 
             - name: Build components
               run: |
-                  yarn nx affected:build --prod --with-deps --base=$DEPLOYMENT_BRANCH
-
-            - name: Fetch affected packages
-              run: |
-                  # Since checkout is referencing the base_ref need to check pull_request origin
-                  PACKAGES=$(yarn nx affected:apps --base=$DEPLOYMENT_BRANCH --plain | awk 'NR > 2 && $1 != "Done" { print $1 }')
-
-            - name: Checkout base branch
-              uses: actions/checkout@v3
-              with:
-                ref: ${{ github.base_ref }}
-                ssh-key: "${{ secrets.COMMIT_KEY }}"
-                fetch-depth: 0
+                  yarn nx affected:build --prod --with-deps --base=$DEPLOYMENT_BRANCH~1 --head=$DEPLOYMENT_BRANCH
 
             - name: Raise version of affected libraries
               run: |
+                  PACKAGES=$(yarn nx affected:apps --base=$DEPLOYMENT_BRANCH~1 --head=$DEPLOYMENT_BRANCH --plain | awk 'NR > 2 && $1 != "Done" { print $1 }')
                   git config user.email "admin@mycelium.ventures"
                   git config user.name ${{ github.actor }}
                   for PACKAGE in $PACKAGES
