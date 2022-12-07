@@ -3,7 +3,7 @@ name: Test and Build
 on:
     pull_request:
         branches:
-            - deployment-test
+            - master
 
 jobs:
     build-test:
