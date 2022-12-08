@@ -27,7 +27,7 @@ jobs:
                   yarn nx affected:apps --base=$DEPLOYMENT_BRANCH --plain | awk 'NR > 2 && $1 != "Done" { print $1 }'
 
     check-swaps-release:
-      needs: check-packages-release
+      needs: check-release
       runs-on: ubuntu-latest:
           steps:
               - run: echo ${{ needs.check-release.outputs.packages}}
