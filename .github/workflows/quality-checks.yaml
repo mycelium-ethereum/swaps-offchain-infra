@@ -37,16 +37,19 @@ jobs:
               name: Find affected packages
               run: |-
                   PACKAGES=$(yarn nx affected:apps --base=master --plain | awk 'NR > 2 && $1 != "Done" { print $1 }')
-                  echo "packages=$PACKAGES" >> $GITHUB_OUTPUT
+                  echo '::set-output name=packages::$PACAKGES'
 
     check-swaps-release:
         runs-on: ubuntu-latest
         needs: check-release
-        steps:
+        strategy:
+            matrix:
+                packages: ${{ fromJson(needs.check-release.outputs.packages) }}
+            steps:
             - name: Checkout
               uses: actions/checkout@v2
 
-            - run: echo ${{ needs.check-release.outputs.packages}}
+            - run: echo ${{ matrix.packages}}
 
             - name: Dry run swaps release
               uses: ./.github/actions/swaps-prices
