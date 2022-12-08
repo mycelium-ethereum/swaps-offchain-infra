@@ -34,12 +34,10 @@ jobs:
                   yarn nx affected --target=build --all
 
             - id: find-affected-packages
-              uses: sergeysova/jq-action@v2
               name: Find affected packages
               run: |-
                   PACKAGES=$(yarn nx affected:apps --base=master --plain | awk 'NR > 2 && $1 != "Done" { print $1 }')
-                  PACKAGES_JSON=$(jq --compact-output --null-input '$ARGS.positional' --args -- "${PACKAGES[@]}")
-                  echo '::set-output name=packages::$PACAKGES_JSON'
+                  echo "packages=toJSON($PACKAGES)" >> $GITHUB_OUTPUT
 
     check-swaps-release:
         runs-on: ubuntu-latest
@@ -47,11 +45,11 @@ jobs:
         strategy:
             matrix:
                 packages: ${{ fromJson(needs.check-release.outputs.packages) }}
-        steps:
+            steps:
             - name: Checkout
               uses: actions/checkout@v2
 
-            - run: echo ${{ matrix.packages}}
+            - run: echo ${{ .packages}}
 
             - name: Dry run swaps release
               uses: ./.github/actions/swaps-prices
