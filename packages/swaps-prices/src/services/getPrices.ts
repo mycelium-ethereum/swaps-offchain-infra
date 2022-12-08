@@ -7,7 +7,6 @@ type GetPriceArgs = {
 };
 
 const cachedPrices: Record<string, { expiry: number; tokens: Record<string, string> }> = {};
-console.log("Trigger change");
 
 // 2 second cache
 const EXPIRY_TIME = 2 * 1000;
