@@ -56,13 +56,8 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v2
 
-            - name: "Print"
-              run: |-
-                  echo "${{ needs.check-release.outputs.packages }}"
-                  IFS=',' read -r -a bash_array <<< "${{ needs.check-release.outputs.packages }}"
-                  echo $bash_array
-
             - name: Dry run swaps release
+              if: contains(IFS=',' read -r -a bash_array <<< "${{ needs.check-release.outputs.packages }}", 'swaps-prices')
               uses: ./.github/actions/swaps-prices
               with:
                   dry-run: true
