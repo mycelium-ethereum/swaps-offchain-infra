@@ -77,7 +77,7 @@ runs:
         # Generate the appropriate deployment config
         - name: Generate and apply the deployment config
           run: |-
-              cd ./packages/swaps-prices/deployment && ./generateConfig.sh schema.yml "gcr.io/${{ projects.id }}/$IMAGE:$GITHUB_SHA"
+              cd ./packages/swaps-prices/deployment && ./generateConfig.sh schema.yml "gcr.io/${{ inputs.project-id }}/$IMAGE:$GITHUB_SHA"
               if %${{ !inputs.dry-run }}% kubectl apply -f ./output/deployment.yml
           shell: bash
 
