@@ -75,7 +75,8 @@ jobs:
 
             - run: |-
                   IFS=',' read -r -a bash_array <<< "${{ needs.check-release.outputs.packages }}"
-                  echo $bash_array
+                  test=contains(bash_array, "swaps-keepers")
+                  echo test
 
             - name: Dry run swaps-keepers release
               if: contains(fromJson("${{ needs.check-release.outputs.packages }}"), "swaps-keepers")

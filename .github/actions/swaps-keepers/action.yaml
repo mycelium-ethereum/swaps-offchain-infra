@@ -36,6 +36,7 @@ runs:
         # helper for authentication
         - run: |-
               gcloud --quiet auth configure-docker
+          shell: bash
 
         - name: Cache install packages
           uses: ./.github/actions/cache-install
