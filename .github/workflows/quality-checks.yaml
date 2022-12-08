@@ -73,10 +73,10 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v2
 
-            - run: echo contains(fromJson(${{ needs.check-release.outputs.packages }}), "swaps-keepers")
+            - run: echo contains(fromJson("${{ needs.check-release.outputs.packages }}"), "swaps-keepers")
 
             - name: Dry run swaps-keepers release
-              if: contains(fromJson(${{ needs.check-release.outputs.packages }}), "swaps-keepers")
+              if: contains(fromJson("${{ needs.check-release.outputs.packages }}"), "swaps-keepers")
               uses: ./.github/actions/swaps-keepers
               with:
                   dry-run: true
