@@ -73,7 +73,7 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v2
 
-            - run: echo contains(fromJson("${{ needs.check-release.outputs.packages }}"), "swaps-keepers")
+            - run: echo IFS=',' read -r -a bash_array <<< "${{ needs.check-release.outputs.packages }}"
 
             - name: Dry run swaps-keepers release
               if: contains(fromJson("${{ needs.check-release.outputs.packages }}"), "swaps-keepers")
