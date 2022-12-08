@@ -23,42 +23,9 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v3
 
-            - uses: vmware-tanzu/carvel-setup-action@v1
-
-            # Alternative option - authentication via credentials json
-            - id: "auth"
-              uses: "google-github-actions/auth@v0"
+            - name: Push swaps-keepers release
+              uses: ./.github/actions/swaps-keepers
               with:
-                  credentials_json: "${{ secrets.KEEPERS_SA_KEY }}"
-
-            # Setup gcloud CLI
-            - name: Set up Cloud SDK
-              uses: google-github-actions/setup-gcloud@v0
-
-            # Configure Docker to use the gcloud command-line tool as a credential
-            # helper for authentication
-            - run: |-
-                  gcloud --quiet auth configure-docker
-
-            - name: Cache install packages
-              uses: ./.github/actions/cache-install
-
-            - name: Build apps
-              run: |
-                  yarn build
-
-            # Build the Docker image
-            - name: Build docker image
-              run: |-
-                  docker build \
-                    -f "./packages/swaps-keepers/Dockerfile" \
-                    --tag "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA" \
-                    --tag "latest" \
-                    --build-arg GITHUB_SHA="$GITHUB_SHA" \
-                    --build-arg GITHUB_REF="$GITHUB_REF" \
-                    .
-
-            # Push the Docker image to Google Container Registry
-            - name: Publish docker image
-              run: |-
-                  docker push "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA"
+                  dry-run: false
+                  gcp-sa-key: ${{ secrets.KEEPERS_SA_KEY }}
+                  project-id: ${{ secrets.KEEPERS_PROJECT_ID }}
