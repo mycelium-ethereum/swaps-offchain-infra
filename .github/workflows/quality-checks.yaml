@@ -1,4 +1,4 @@
-name: Test build and release affected packages
+name: Test and build affected apps
 
 on:
     pull_request:
