@@ -75,6 +75,11 @@ jobs:
 
             - name: Dry run swaps-keepers release
               if: contains(fromJson('${{ needs.check-release.outputs.packages }}'), "swaps-keepers")
+              run: |-
+                  echo "Hello world"
+
+            - name: Dry run swaps-keepers release
+              if: contains(fromJson('${{ needs.check-release.outputs.packages }}'), "swaps-keepers")
               uses: ./.github/actions/swaps-keepers
               with:
                   dry-run: true
