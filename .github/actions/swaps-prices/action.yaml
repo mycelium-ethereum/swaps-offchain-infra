@@ -2,9 +2,6 @@ name: "Swaps prices deploy"
 description: "Deploys swaps prices service to kubernets"
 
 env:
-    GKE_CLUSTER: swaps-prices-cluster # Add your cluster name here.
-    GKE_ZONE: us-central1 # Add your cluster zone here.
-    IMAGE: swaps-prices
 
 inputs:
     dry-run: # id of input
@@ -57,7 +54,7 @@ runs:
 
         # Get the GKE credentials so we can deploy to the cluster
         - run: |-
-              gcloud container clusters get-credentials "${{ inputs.gke-cluster }}" --zone "${{ gke-zone }}"
+              gcloud container clusters get-credentials "${{ inputs.gke-cluster }}" --zone "${{ inputs.gke-zone }}"
           shell: bash
 
         # Build the Docker image
