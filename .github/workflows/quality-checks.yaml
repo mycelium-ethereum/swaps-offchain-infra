@@ -57,7 +57,10 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v2
 
-            - run: echo ${{ needs.check-release.outputs.packages }}
+            - run: |
+              echo ${{ needs.check-release.outputs.packages }}
+              IFS=',' read -r -a bash_array <<< "${{ needs.check-release.outputs.packages }}"
+              echo base_array
 
             - name: Dry run swaps release
               uses: ./.github/actions/swaps-prices
