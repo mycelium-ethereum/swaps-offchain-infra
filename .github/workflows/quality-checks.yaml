@@ -37,9 +37,15 @@ jobs:
               name: Find affected packages
               run: |-
                   PACKAGES=$(yarn nx affected:apps --base=origin/master --plain | awk 'NR > 2 && $1 != "Done" { print $1 }')
-                  echo "Found $PACKAGES"
-                  echo  "[" + join($PACKAGES) + "]"
-                  echo "matrix=toJSON([join($PACKAGES)])" >> $GITHUB_OUTPUT
+                  PACKAGE_JSON="["
+                  for PACKAGE in $PACKAGES
+                  do
+                    echo "$PACKAGE is affected"
+                    PACKAGE_JSON+=\"$PACKAGE\"
+                  done
+                  PACKAGE_JSON+="]"
+                  echo PACKAGE_JSON
+                  echo "matrix=toJSON($PACKAGE_JSON)" >> $GITHUB_OUTPUT
 
     check-swaps-release:
         runs-on: ubuntu-latest
