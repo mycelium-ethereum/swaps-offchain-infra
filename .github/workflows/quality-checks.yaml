@@ -8,7 +8,7 @@ on:
 jobs:
     check-release:
         outputs:
-            pacakges: ${{ steps.find-affected-packages.outputs.packages }}
+            matrix: ${{ steps.find-affected-packages.outputs.matrix }}
         runs-on: ubuntu-latest
 
         steps:
@@ -37,19 +37,16 @@ jobs:
               name: Find affected packages
               run: |-
                   PACKAGES=$(yarn nx affected:apps --base=master --plain | awk 'NR > 2 && $1 != "Done" { print $1 }')
-                  echo "packages=toJSON($PACKAGES)" >> $GITHUB_OUTPUT
+                  echo "matrix=toJSON($PACKAGES)" >> $GITHUB_OUTPUT
 
     check-swaps-release:
         runs-on: ubuntu-latest
-        needs: check-release
         strategy:
-            matrix:
-                packages: ${{ fromJson(needs.check-release.outputs.packages) }}
-            steps:
+            matrix: ${{ fromJson(needs.check-release.outputs.matrix) }}
+        needs: check-release
+        steps:
             - name: Checkout
               uses: actions/checkout@v2
-
-            - run: echo ${{ .packages}}
 
             - name: Dry run swaps release
               uses: ./.github/actions/swaps-prices
