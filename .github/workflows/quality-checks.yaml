@@ -65,4 +65,3 @@ jobs:
                   project-id: ${{ secrets.PRICES_PROJECT_ID }}
                   gke-cluster: swaps-prices-cluster
                   gke-zone: us-central1
-
