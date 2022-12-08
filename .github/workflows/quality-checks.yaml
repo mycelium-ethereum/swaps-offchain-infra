@@ -45,7 +45,7 @@ jobs:
         strategy:
             matrix:
                 packages: ${{ fromJson(needs.check-release.outputs.packages) }}
-            steps:
+        steps:
             - name: Checkout
               uses: actions/checkout@v2
 
