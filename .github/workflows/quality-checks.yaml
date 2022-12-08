@@ -36,7 +36,7 @@ jobs:
             - id: find-affected-packages
               name: Find affected packages
               run: |-
-                  PACKAGES=$(yarn nx affected:apps --base=$DEPLOYMENT_BRANCH --plain | awk 'NR > 2 && $1 != "Done" { print $1 }')
+                  PACKAGES=$(yarn nx affected:apps --base=master --plain | awk 'NR > 2 && $1 != "Done" { print $1 }')
                   echo "packages=$PACKAGES" >> $GITHUB_OUTPUT
 
     check-swaps-release:
