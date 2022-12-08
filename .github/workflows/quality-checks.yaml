@@ -21,22 +21,23 @@ jobs:
               uses: ./.github/actions/cache-install
 
             - name: Check formatting
-              run: |
+              run: |-
                   yarn nx affected --target=lint --all
                   yarn nx format:check --all
 
             - name: Test
-              run: |
+              run: |-
                   yarn nx affected --target=test --all
 
             - name: Build
-              run: |
+              run: |-
                   yarn nx affected --target=build --all
 
             - id: find-affected-packages
               name: Find affected packages
-              run: |
-                  yarn nx affected:apps --base=$DEPLOYMENT_BRANCH --plain | awk 'NR > 2 && $1 != "Done" { print $1 }'
+              run: |-
+                  PACKAGES=$(yarn nx affected:apps --base=$DEPLOYMENT_BRANCH --plain | awk 'NR > 2 && $1 != "Done" { print $1 }')
+                  echo "packages=$PACKAGES" >> $GITHUB_OUTPUT
 
     check-swaps-release:
         runs-on: ubuntu-latest
@@ -44,7 +45,9 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v2
+
             - run: echo ${{ needs.check-release.outputs.packages}}
+
             - name: Dry run swaps release
               uses: ./.github/actions/swaps-prices
               with:
