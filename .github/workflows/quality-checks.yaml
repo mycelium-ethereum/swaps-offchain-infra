@@ -8,7 +8,7 @@ on:
 jobs:
     check-release:
         outputs:
-            matrix: ${{ steps.find-affected-packages.outputs.matrix }}
+            packages: ${{ steps.find-affected-packages.outputs.packages }}
         runs-on: ubuntu-latest
 
         steps:
@@ -47,16 +47,17 @@ jobs:
                   done
                   PACKAGE_JSON+="]"
                   echo $PACKAGE_JSON
-                  echo "matrix=$PACKAGE_JSON" >> $GITHUB_OUTPUT
+                  echo "pacakges=$PACKAGE_JSON" >> $GITHUB_OUTPUT
 
     check-swaps-release:
         runs-on: ubuntu-latest
         strategy:
-            matrix: ${{ fromJson(needs.check-release.outputs.matrix) }}
         needs: check-release
         steps:
             - name: Checkout
               uses: actions/checkout@v2
+
+            - run: echo ${{ needs.check-release.outputs.packages }}
 
             - name: Dry run swaps release
               uses: ./.github/actions/swaps-prices
