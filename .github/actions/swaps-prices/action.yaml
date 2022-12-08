@@ -1,0 +1,91 @@
+name: "Swaps prices deploy"
+description: "Deploys swaps prices service to kubernets"
+
+env:
+
+inputs:
+    dry-run: # id of input
+        description: "Dry run deploymenets will go through each stage besides pushing the configuration to production"
+        default: true
+    gke-sa-key:
+        description: "A google cloud service account key"
+        required: true
+    project-id:
+        description: "The google cloud project id"
+        required: true
+    gke-cluster:
+        description: "The google cloud k8's cluster name"
+        required: true
+    gke-zone:
+        description: "The google cloud zone"
+        required: true
+
+runs:
+    using: "composite"
+    steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+
+        - uses: vmware-tanzu/carvel-setup-action@v1
+
+        - name: Cache install packages
+          uses: ./.github/actions/cache-install
+
+        - name: Build apps
+          run: |
+              yarn build
+          shell: bash
+
+        # Alternative option - authentication via credentials json
+        - id: "auth"
+          uses: "google-github-actions/auth@v0"
+          with:
+              credentials_json: "${{ inputs.gke-sa-key }}"
+
+        # Setup gcloud CLI
+        - name: Set up Cloud SDK
+          uses: google-github-actions/setup-gcloud@v0
+
+        # Configure Docker to use the gcloud command-line tool as a credential
+        # helper for authentication
+        - run: |-
+              gcloud --quiet auth configure-docker
+          shell: bash
+
+        # Get the GKE credentials so we can deploy to the cluster
+        - run: |-
+              gcloud container clusters get-credentials "${{ inputs.gke-cluster }}" --zone "${{ inputs.gke-zone }}"
+          shell: bash
+
+        # Build the Docker image
+        - name: Build docker image
+          run: |-
+              docker build \
+                -f "./packages/swaps-prices/Dockerfile" \
+                --tag "gcr.io/${{ inputs.project-id }}/swaps-prices:$GITHUB_SHA" \
+                --build-arg GITHUB_SHA="$GITHUB_SHA" \
+                --build-arg GITHUB_REF="$GITHUB_REF" \
+                .
+          shell: bash
+
+        # Push the Docker image to Google Container Registry
+        - name: Publish docker image
+          if: ${{ !inputs.dry-run }}
+          run: |-
+              docker push "gcr.io/${{ inputs.project-id }}/swaps-prices:$GITHUB_SHA"
+          shell: bash
+
+        # Generate the appropriate deployment config
+        - name: Generate and apply the deployment config
+          run: |-
+              cd ./packages/swaps-prices/deployment && ./generateConfig.sh schema.yml "gcr.io/${{ inputs.project-id }}/swaps-prices:$GITHUB_SHA";
+              if [${{ !inputs.dry-run }}]; then kubectl apply -f ./output/deployment.yml; fi;
+          shell: bash
+
+        # Deploy sample image to the GKE cluster
+        - name: Rollout deployment
+          if: ${{ !inputs.dry-run }}
+          run: |-
+              kubectl rollout status deployment/swaps-prices
+              kubectl get services -o wide
+          shell: bash
