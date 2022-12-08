@@ -51,7 +51,7 @@ runs:
           run: |-
               docker build \
                 -f "./packages/swaps-keepers/Dockerfile" \
-                --tag "gcr.io/${{ inputs.project-id }}/$IMAGE:$GITHUB_SHA" \
+                --tag "gcr.io/${{ inputs.project-id }}/swaps-keepers:$GITHUB_SHA" \
                 --tag "latest" \
                 --build-arg GITHUB_SHA="$GITHUB_SHA" \
                 --build-arg GITHUB_REF="$GITHUB_REF" \
@@ -62,5 +62,5 @@ runs:
         - name: Publish docker image
           if: ${{ !inputs.dry-run }}
           run: |-
-              docker push "gcr.io/${{ inputs.project-id }}/$IMAGE:$GITHUB_SHA"
+              docker push "gcr.io/${{ inputs.project-id }}/swaps-keepers:$GITHUB_SHA"
           shell: bash
