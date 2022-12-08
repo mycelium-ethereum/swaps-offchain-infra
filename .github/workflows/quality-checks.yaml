@@ -47,7 +47,7 @@ jobs:
                   done
                   PACKAGE_JSON+="]"
                   echo $PACKAGE_JSON
-                  echo "pacakges=$PACKAGE_JSON" >> $GITHUB_OUTPUT
+                  echo "packages=$PACKAGE_JSON" >> $GITHUB_OUTPUT
 
     check-swaps-release:
         runs-on: ubuntu-latest
