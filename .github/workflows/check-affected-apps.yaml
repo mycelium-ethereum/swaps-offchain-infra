@@ -1,0 +1,41 @@
+name: Check affected apps
+
+on:
+    pull_request:
+        branches:
+            - master
+
+env:
+    DEPLOYMENT_BRANCH: master
+
+jobs:
+    check-release:
+        outputs:
+            pacakges: ${{ steps.find-affected-packages.outputs.packages }}
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+
+            - name: Cache install packages
+              uses: ./.github/actions/cache-install
+
+            - id: find-affected-packages
+              name: Find affected packages
+              run: |
+                  yarn nx affected:apps --base=$DEPLOYMENT_BRANCH --plain | awk 'NR > 2 && $1 != "Done" { print $1 }'
+
+    check-swaps-release:
+      needs: check-packages-release
+      runs-on: ubuntu-latest:
+        steps:
+          - run: echo ${{ needs.check-release.outputs.packages}}
+          - name: Dry run swaps release 
+            uses: ./.github/actions/swaps-prices
+                with:
+                dry-run: true
+                gke-sa-key: ${{ secrets.GKE_SA_KEY }}
+                project-id: ${{ secrets.PRICES_PROJECT_ID }}
+
+
