@@ -29,13 +29,13 @@ jobs:
     check-swaps-release:
       needs: check-packages-release
       runs-on: ubuntu-latest:
-        steps:
-          - run: echo ${{ needs.check-release.outputs.packages}}
-          - name: Dry run swaps release 
-            uses: ./.github/actions/swaps-prices
-                with:
-                dry-run: true
-                gke-sa-key: ${{ secrets.GKE_SA_KEY }}
-                project-id: ${{ secrets.PRICES_PROJECT_ID }}
+          steps:
+              - run: echo ${{ needs.check-release.outputs.packages}}
+              - name: Dry run swaps release 
+                uses: ./.github/actions/swaps-prices
+                    with:
+                    dry-run: true
+                    gke-sa-key: ${{ secrets.GKE_SA_KEY }}
+                    project-id: ${{ secrets.PRICES_PROJECT_ID }}
 
 
