@@ -46,7 +46,7 @@ jobs:
                     delim=","
                   done
                   PACKAGE_JSON+="]"
-                  echo PACKAGE_JSON
+                  echo $PACKAGE_JSON
                   echo "matrix=toJSON($PACKAGE_JSON)" >> $GITHUB_OUTPUT
 
     check-swaps-release:
