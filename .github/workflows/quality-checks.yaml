@@ -61,5 +61,5 @@ jobs:
               uses: ./.github/actions/swaps-prices
               with:
                   dry-run: true
-                  gke-sa-key: toJSON(${{ secrets.GKE_SA_KEY }})
+                  gke-sa-key: ${{ secrets.GKE_SA_KEY }}
                   project-id: ${{ secrets.PRICES_PROJECT_ID }}
