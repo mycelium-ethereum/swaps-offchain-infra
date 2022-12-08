@@ -74,7 +74,7 @@ jobs:
               uses: actions/checkout@v2
 
             - name: Dry run swaps-keepers release
-              if: contains(fromJson('${{ needs.check-release.outputs.packages }}'), "swaps-keepers")
+              if: contains(fromJson('${{ needs.check-release.outputs.packages }}'), "test")
               run: |-
                   echo "Hello world"
 
