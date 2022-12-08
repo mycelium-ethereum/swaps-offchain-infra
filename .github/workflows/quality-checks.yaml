@@ -38,7 +38,7 @@ jobs:
               run: |-
                   PACKAGES=$(yarn nx affected:apps --base=origin/master --plain | awk 'NR > 2 && $1 != "Done" { print $1 }')
                   echo "Found $PACKAGES"
-                  echo "[join($PACKAGES)]"
+                  echo "[$join($PACKAGES)]"
                   echo "matrix=toJSON([join($PACKAGES)])" >> $GITHUB_OUTPUT
 
     check-swaps-release:
