@@ -51,7 +51,6 @@ jobs:
 
     check-swaps-release:
         runs-on: ubuntu-latest
-        strategy:
         needs: check-release
         steps:
             - name: Checkout
