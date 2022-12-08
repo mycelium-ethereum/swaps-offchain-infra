@@ -43,7 +43,7 @@ runs:
         - name: Build apps
           run: |
               yarn build
-          bash: shell
+          shell: bash 
 
         # Build the Docker image
         - name: Build docker image
@@ -55,11 +55,11 @@ runs:
                 --build-arg GITHUB_SHA="$GITHUB_SHA" \
                 --build-arg GITHUB_REF="$GITHUB_REF" \
                 .
-          bash: shell
+          shell: bash 
 
         # Push the Docker image to Google Container Registry
         - name: Publish docker image
           if: ${{ !inputs.dry-run }}
           run: |-
               docker push "gcr.io/${{ inputs.project-id }}/$IMAGE:$GITHUB_SHA"
-          bash: shell
+          shell: bash 
