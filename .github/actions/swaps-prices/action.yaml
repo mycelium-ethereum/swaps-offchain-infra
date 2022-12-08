@@ -72,6 +72,7 @@ runs:
           if: ${{ !inputs.dry-run }}
           run: |-
               docker push "gcr.io/${{ inputs.project-id }}/$IMAGE:$GITHUB_SHA"
+          shell: bash
 
         # Generate the appropriate deployment config
         - name: Generate and apply the deployment config
