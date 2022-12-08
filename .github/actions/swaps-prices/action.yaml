@@ -2,10 +2,8 @@ name: "Swaps prices deploy"
 description: "Deploys swaps prices service to kubernets"
 
 env:
-    # PROJECT_ID: ${{ secrets.PRICES_PROJECT_ID }}
     GKE_CLUSTER: swaps-prices-cluster # Add your cluster name here.
     GKE_ZONE: us-central1 # Add your cluster zone here.
-    DEPLOYMENT_NAME: swaps-prices # Add your deployment name here.
     IMAGE: swaps-prices
 
 inputs:
@@ -17,6 +15,12 @@ inputs:
         required: true
     project-id:
         description: "The google cloud project id"
+        required: true
+    gke-cluster:
+        description: "The google cloud k8's cluster name"
+        required: true
+    gke-zone:
+        description: "The google cloud zone"
         required: true
 
 runs:
@@ -53,7 +57,7 @@ runs:
 
         # Get the GKE credentials so we can deploy to the cluster
         - run: |-
-              gcloud container clusters get-credentials "$GKE_CLUSTER" --zone "$GKE_ZONE"
+              gcloud container clusters get-credentials "${{ inputs.gke-cluster }}" --zone "${{ gke-zone }}"
           shell: bash
 
         # Build the Docker image
@@ -61,7 +65,7 @@ runs:
           run: |-
               docker build \
                 -f "./packages/swaps-prices/Dockerfile" \
-                --tag "gcr.io/${{ inputs.project-id }}/$IMAGE:$GITHUB_SHA" \
+                --tag "gcr.io/${{ inputs.project-id }}/swaps-prices:$GITHUB_SHA" \
                 --build-arg GITHUB_SHA="$GITHUB_SHA" \
                 --build-arg GITHUB_REF="$GITHUB_REF" \
                 .
@@ -71,13 +75,13 @@ runs:
         - name: Publish docker image
           if: ${{ !inputs.dry-run }}
           run: |-
-              docker push "gcr.io/${{ inputs.project-id }}/$IMAGE:$GITHUB_SHA"
+              docker push "gcr.io/${{ inputs.project-id }}/swaps-prices:$GITHUB_SHA"
           shell: bash
 
         # Generate the appropriate deployment config
         - name: Generate and apply the deployment config
           run: |-
-              cd ./packages/swaps-prices/deployment && ./generateConfig.sh schema.yml "gcr.io/${{ inputs.project-id }}/$IMAGE:$GITHUB_SHA"
+              cd ./packages/swaps-prices/deployment && ./generateConfig.sh schema.yml "gcr.io/${{ inputs.project-id }}/swaps-prices:$GITHUB_SHA"
               if %${{ !inputs.dry-run }}% kubectl apply -f ./output/deployment.yml
           shell: bash
 
@@ -85,6 +89,6 @@ runs:
         - name: Rollout deployment
           if: ${{ !inputs.dry-run }}
           run: |-
-              kubectl rollout status deployment/$DEPLOYMENT_NAME
+              kubectl rollout status deployment/swaps-prices
               kubectl get services -o wide
           shell: bash

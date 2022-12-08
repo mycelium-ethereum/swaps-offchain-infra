@@ -49,7 +49,7 @@ jobs:
                   echo $PACKAGE_JSON
                   echo "packages=$PACKAGE_JSON" >> $GITHUB_OUTPUT
 
-    check-swaps-release:
+    check-prices-release:
         runs-on: ubuntu-latest
         needs: check-release
         steps:
@@ -63,3 +63,6 @@ jobs:
                   dry-run: true
                   gke-sa-key: ${{ secrets.GKE_SA_KEY }}
                   project-id: ${{ secrets.PRICES_PROJECT_ID }}
+                  gke-cluster: swaps-prices-cluster
+                  gke-zone: us-central1
+
