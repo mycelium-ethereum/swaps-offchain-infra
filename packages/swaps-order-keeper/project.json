@@ -1,0 +1,67 @@
+{
+    "name": "swaps-order-keeper",
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "packages/swaps-order-keeper/src",
+    "projectType": "application",
+    "targets": {
+        "build": {
+            "executor": "@nrwl/webpack:webpack",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "target": "node",
+                "compiler": "tsc",
+                "outputPath": "dist/packages/swaps-order-keeper",
+                "main": "packages/swaps-order-keeper/src/main.ts",
+                "tsConfig": "packages/swaps-order-keeper/tsconfig.app.json"
+            },
+            "configurations": {
+                "production": {
+                    "optimization": true,
+                    "extractLicenses": true,
+                    "inspect": false,
+                    "fileReplacements": [
+                        {
+                            "replace": "packages/swaps-order-keeper/src/environments/environment.ts",
+                            "with": "packages/swaps-order-keeper/src/environments/environment.prod.ts"
+                        }
+                    ]
+                }
+            }
+        },
+        "serve": {
+            "executor": "@nrwl/js:node",
+            "options": {
+                "buildTarget": "swaps-order-keeper:build"
+            },
+            "configurations": {
+                "production": {
+                    "buildTarget": "swaps-order-keeper:build:production"
+                }
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["packages/swaps-order-keeper/**/*.ts"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+            "options": {
+                "jestConfig": "packages/swaps-order-keeper/jest.config.ts",
+                "passWithNoTests": true
+            }
+        },
+        "dev": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    "TS_NODE_PROJECT=tsconfig.base.json ts-node-dev -r tsconfig-paths/register packages/swaps-order-keeper/src/main.ts"
+                ]
+            }
+        }
+    },
+    "tags": []
+}
