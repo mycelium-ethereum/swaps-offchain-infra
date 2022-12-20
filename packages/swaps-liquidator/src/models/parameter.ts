@@ -11,7 +11,7 @@ const parameterSchema = new Schema<IParameterSchema>({
     key: { type: String, required: true, index: true },
     value: { type: String, required: true },
     createdAt: { type: Date, default: Date.now },
-    modifiedAt: { type: Date,required: false },
+    modifiedAt: { type: Date, required: false },
 });
 
 const Parameter = model<IParameterSchema>("Parameter", parameterSchema);
