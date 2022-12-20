@@ -6,6 +6,7 @@ import { ethers } from "ethers";
 import PositionKeeper from "./services/positionKeeper";
 import PriceKeeper from "./services/priceKeeper";
 import PricePoller from "./services/pricePoller";
+import FastPriceFeedABI from "./abis/FastPriceFeed.json";
 import PriceFeed, { UpdateResult } from "./services/priceFeed";
 import { handleClosedConnection } from "./utils";
 import {
@@ -159,7 +160,8 @@ const main = async () => {
 
     const feedContract = VaultPriceFeed__factory.connect(priceFeedAddress, provider);
     const secondaryPriceFeed = await feedContract.secondaryPriceFeed();
-    let fastPriceContract = FastPriceFeed__factory.connect(secondaryPriceFeed, signer);
+    // This ABI doesn't match the one in the package, it's being upgraded
+    let fastPriceContract = new ethers.Contract(secondaryPriceFeed, FastPriceFeedABI, signer) as FastPriceFeed;
 
     const priceFeed = await PriceFeed.Create({
         priceFeed: priceFeedAddress,
