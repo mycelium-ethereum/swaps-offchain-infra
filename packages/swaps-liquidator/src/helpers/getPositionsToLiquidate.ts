@@ -63,7 +63,7 @@ const getLiquidationState = async (dbPosition: IPositionSchema, vault: Vault) =>
                 );
                 return state;
             },
-            shouldRetry: (err) => {
+            shouldRetry: () => {
                 return true;
             },
             maxRetries: 10,

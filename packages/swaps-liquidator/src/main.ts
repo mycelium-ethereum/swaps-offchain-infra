@@ -21,6 +21,7 @@ app.listen(process.env.PORT, async () => {
 
 const startInterval = async () => {
     console.log(`*** Starting liquidator with interval ${INTERVAL}ms ***`);
+    // eslint-disable-next-line no-constant-condition
     while (true) {
         await liquidationHandler();
         await sleep(INTERVAL / 1000);

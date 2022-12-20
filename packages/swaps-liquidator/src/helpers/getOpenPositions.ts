@@ -23,7 +23,7 @@ const getOpenPositions = async (vault: Vault, provider: Provider) => {
         parameterService.createNewParameter("PROCESSED_LAST_BLOCK", cursor.toString());
     }
 
-    let lastBlock = await provider.getBlock("latest");
+    const lastBlock = await provider.getBlock("latest");
 
     console.log("lastBlock =" + lastBlock.number);
 
