@@ -1,20 +1,8 @@
-FROM node:16
+FROM node:18
 
-WORKDIR /app
+COPY ./dist/packages/swaps-order-keeper .
+COPY package.json .
 
-COPY package.json ./
-COPY yarn.lock ./
+RUN npm install --production
 
-RUN yarn
-
-COPY . .
-
-ENV PORT=3000
-
-EXPOSE 3000
-
-ENV NODE_PATH=./dist
-
-RUN npm run build
-
-CMD ["yarn", "start"]
+CMD node ./main.js

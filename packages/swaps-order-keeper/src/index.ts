@@ -8,7 +8,7 @@ import { registerMetrics, resetMetrics } from "./prometheus";
 import { Registry } from "prom-client";
 
 const PORT = process.env.PORT || 3000;
-const DB_URL = process.env.DB_URL;
+const DB_URL = process.env.DB_URL || "";
 const INTERVAL_MS = Number(process.env.INTERVAL_MS) || 60 * 1000;
 const IS_PAUSED = process.env.IS_PAUSED === "true" ? true : false;
 
