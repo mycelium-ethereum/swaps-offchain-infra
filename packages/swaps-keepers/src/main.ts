@@ -159,7 +159,6 @@ const main = async () => {
 
     const feedContract = VaultPriceFeed__factory.connect(priceFeedAddress, provider);
     const secondaryPriceFeed = await feedContract.secondaryPriceFeed();
-    // This ABI doesn't match the one in the package, it's being upgraded
     let fastPriceContract = FastPriceFeed__factory.connect(secondaryPriceFeed, signer);
 
     const priceFeed = await PriceFeed.Create({
