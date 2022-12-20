@@ -11,7 +11,7 @@
                 "target": "node",
                 "compiler": "tsc",
                 "outputPath": "dist/packages/swaps-order-keeper",
-                "main": "packages/swaps-order-keeper/src/index.ts",
+                "main": "packages/swaps-order-keeper/src/main.ts",
                 "tsConfig": "packages/swaps-order-keeper/tsconfig.app.json",
                 "generatePackageJson": true
             },
