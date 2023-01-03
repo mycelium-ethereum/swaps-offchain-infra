@@ -54,7 +54,11 @@ export const liquidateInBatches = async (positions: IPositionSchema[], positionM
             console.log(colors.green(`Sent!`));
             console.log(colors.green(`Transaction hash: ${receipt.transactionHash}`));
 
-            const errorEvents = receipt.events?.filter((event) => event.event === "LiquidationError") || [];
+            const errorEvents =
+                receipt.events?.filter(
+                    (event) =>
+                        event.event === "LiquidationError" && event.args?.account !== ethers.constants.AddressZero
+                ) || [];
             if (errorEvents.length) {
                 console.log(colors.red(`${errorEvents.length} liquidation errors occured`));
                 errorEvents.forEach((event) => {
