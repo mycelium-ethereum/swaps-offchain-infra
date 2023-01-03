@@ -37,7 +37,7 @@ const liquidationHandler = async function () {
         }
 
         console.log("STEP 2: Get positions to liquidate");
-        const positionsToLiquidate = await getPositionsToLiquidate(vault, openPositions);
+        const positionsToLiquidate = await getPositionsToLiquidate(vault, positionManager, openPositions);
 
         console.log("positionsToLiquidate.length: " + positionsToLiquidate.length);
 
