@@ -205,7 +205,6 @@ const main = async () => {
         ]);
         priceStore.storePrices("binance", binancePrices, true);
         priceStore.storePrices("bitfinex", bitFinexPrices, true);
-        // priceStore.storePrices('ftx', ftxPrices, true)
         priceStore.storePrices("cryptoCom", cryptoComPrices, true);
 
         // set initial prices
@@ -233,7 +232,6 @@ const main = async () => {
                 ]);
                 priceStore.storePrices("binance", binancePrices, true);
                 priceStore.storePrices("bitfinex", bitFinexPrices, true);
-                // priceStore.storePrices('ftx', ftxPrices, true)
                 priceStore.storePrices("cryptoCom", cryptoComPrices, true);
 
                 // update store prices triggers a price comparison

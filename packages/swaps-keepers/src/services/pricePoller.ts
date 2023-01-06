@@ -49,9 +49,7 @@ export class PricePoller {
     };
 
     fetchBinancePrices = async (): Promise<ParsedTokenPrice[]> => {
-        const query = tokensToBinanceQuery(this.tokens);
-        console.log(`Fetching binance prices with query: ${query}`);
-        const binancePrices: BinancePrice[] = (await fetch(query)
+        const binancePrices: BinancePrice[] = (await fetch(tokensToBinanceQuery(this.tokens))
             .then((res) => res.json())
             .catch((err) => {
                 console.error("Failed to fetch binance prices", err);
