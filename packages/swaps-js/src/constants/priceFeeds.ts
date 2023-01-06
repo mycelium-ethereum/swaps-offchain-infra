@@ -88,7 +88,7 @@ export const createFtxWsFeeds = (tokens: KnownToken[]) =>
 // all tickers https://api.crypto.com/v2/public/get-ticker
 // dont fetch for all
 export const knownTokenToCryptoComSymbols: Partial<Record<KnownToken, string>> = {
-    // [KnownToken.ETH]: 'ETH_USD',
+    [KnownToken.ETH]: "ETH_USD",
     [KnownToken.BTC]: "BTC_USD",
     // [KnownToken.BTC]: 'WBTC_USD',
     // [KnownToken.LINK]: 'LINK_USD',
