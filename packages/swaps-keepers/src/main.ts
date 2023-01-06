@@ -225,14 +225,12 @@ const main = async () => {
                 checkedPrices.inc();
 
                 logger.info("Updating CEX prices, fetching binance, bitfinex, crypto.com and feedPrices");
-                const [binancePrices, bitFinexPrices, cryptoComPrices, feedPrices] = await Promise.all(
-                    [
-                        pricePoller.fetchBinancePrices().catch((error) => pricePollerError(error, "binance")),
-                        pricePoller.fetchBitfinexPrices().catch((error) => pricePollerError(error, "bitfinex")),
-                        pricePoller.fetchCryptoComPrices().catch((error) => pricePollerError(error, "cryptoCom")),
-                        priceFeed.fetchFeedPrices(fastPriceContract),
-                    ]
-                );
+                const [binancePrices, bitFinexPrices, cryptoComPrices, feedPrices] = await Promise.all([
+                    pricePoller.fetchBinancePrices().catch((error) => pricePollerError(error, "binance")),
+                    pricePoller.fetchBitfinexPrices().catch((error) => pricePollerError(error, "bitfinex")),
+                    pricePoller.fetchCryptoComPrices().catch((error) => pricePollerError(error, "cryptoCom")),
+                    priceFeed.fetchFeedPrices(fastPriceContract),
+                ]);
                 priceStore.storePrices("binance", binancePrices, true);
                 priceStore.storePrices("bitfinex", bitFinexPrices, true);
                 // priceStore.storePrices('ftx', ftxPrices, true)
