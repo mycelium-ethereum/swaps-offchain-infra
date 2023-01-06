@@ -3,8 +3,8 @@ import { KnownToken, CoinbaseWsTopic } from "../types";
 // https://github.com/gmx-io/gmx-contracts/blob/master/contracts/oracle/FastPriceFeed.sol#L296
 export const MAX_PRICE_FEED_TOKENS_LENGTH = 8;
 
-// all tickers https://api.binance.com/api/v3/ticker/price
-export const BASE_BINANCE_URL = "https://api.binance.com/api/v3";
+// all tickers https://api.binance.us/api/v3/ticker/price
+export const BASE_BINANCE_URL = "https://api.binance.us/api/v3";
 // NOTE: Binance is the only api that returns an error if the symbol does not exist
 export const knownTokenToBinanceSymbols: Record<KnownToken, string> = {
     [KnownToken.ETH]: "ETHUSDT",
@@ -88,7 +88,7 @@ export const createFtxWsFeeds = (tokens: KnownToken[]) =>
 // all tickers https://api.crypto.com/v2/public/get-ticker
 // dont fetch for all
 export const knownTokenToCryptoComSymbols: Partial<Record<KnownToken, string>> = {
-    // [KnownToken.ETH]: 'ETH_USD',
+    // [KnownToken.ETH]: "ETH_USD",
     [KnownToken.BTC]: "BTC_USD",
     // [KnownToken.BTC]: 'WBTC_USD',
     // [KnownToken.LINK]: 'LINK_USD',
