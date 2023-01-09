@@ -1,0 +1,33 @@
+name: Deploy swaps-liquidator image to cloud registry
+
+
+on: [push]
+# on:
+#     push:
+#         tags:
+#             - "swaps-keepers/v*"
+
+env:
+    PROJECT_ID: ${{ secrets.KEEPERS_PROJECT_ID }}
+    IMAGE: swaps-liquidator
+
+jobs:
+    setup-and-deploy:
+        name: Setup and Deploy
+        runs-on: ubuntu-latest
+
+        # Add "id-token" with the intended permissions.
+        permissions:
+            contents: "read"
+            id-token: "write"
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+
+            - name: Push swaps-liquidator release
+              uses: ./.github/actions/swaps-liquidator
+              with:
+                  dry-run: false
+                  gcp-sa-key: ${{ secrets.KEEPERS_SA_KEY }}
+                  project-id: ${{ secrets.KEEPERS_PROJECT_ID }}
