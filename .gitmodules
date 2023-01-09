@@ -4,6 +4,3 @@
 [submodule "swaps-prices"]
 	path = packages/swaps-prices
 	url = https://github.com/mycelium-ethereum/swaps-prices.git
-[submodule "packages/packages/swaps-order-keeper"]
-	path = packages/packages/swaps-order-keeper
-	url = https://github.com/mycelium-ethereum/swaps-order-book-keeper.git
