@@ -198,15 +198,13 @@ const main = async () => {
 
     if (!pausedPriceKeeper) {
         const pricePoller = new PricePoller({ tokens: priceFeed.tokens ?? [] });
-        const [binancePrices, bitFinexPrices, cryptoComPrices /* , ftxPrices */] = await Promise.all([
+        const [binancePrices, bitFinexPrices, cryptoComPrices] = await Promise.all([
             pricePoller.fetchBinancePrices().catch((error) => pricePollerError(error, "binance")),
             pricePoller.fetchBitfinexPrices().catch((error) => pricePollerError(error, "bitfinex")),
-            // pricePoller.fetchFTXPrices().catch((error) => pricePollerError(error, 'ftx')),
             pricePoller.fetchCryptoComPrices().catch((error) => pricePollerError(error, "cryptoCom")),
         ]);
         priceStore.storePrices("binance", binancePrices, true);
         priceStore.storePrices("bitfinex", bitFinexPrices, true);
-        // priceStore.storePrices('ftx', ftxPrices, true)
         priceStore.storePrices("cryptoCom", cryptoComPrices, true);
 
         // set initial prices
@@ -226,18 +224,14 @@ const main = async () => {
                 checkedPrices.inc();
 
                 logger.info("Updating CEX prices, fetching binance, bitfinex, crypto.com and feedPrices");
-                const [binancePrices, bitFinexPrices, cryptoComPrices /*, ftxPrices */, feedPrices] = await Promise.all(
-                    [
-                        pricePoller.fetchBinancePrices().catch((error) => pricePollerError(error, "binance")),
-                        pricePoller.fetchBitfinexPrices().catch((error) => pricePollerError(error, "bitfinex")),
-                        // pricePoller.fetchFTXPrices().catch((error) => pricePollerError(error, 'ftx')),
-                        pricePoller.fetchCryptoComPrices().catch((error) => pricePollerError(error, "cryptoCom")),
-                        priceFeed.fetchFeedPrices(fastPriceContract),
-                    ]
-                );
+                const [binancePrices, bitFinexPrices, cryptoComPrices, feedPrices] = await Promise.all([
+                    pricePoller.fetchBinancePrices().catch((error) => pricePollerError(error, "binance")),
+                    pricePoller.fetchBitfinexPrices().catch((error) => pricePollerError(error, "bitfinex")),
+                    pricePoller.fetchCryptoComPrices().catch((error) => pricePollerError(error, "cryptoCom")),
+                    priceFeed.fetchFeedPrices(fastPriceContract),
+                ]);
                 priceStore.storePrices("binance", binancePrices, true);
                 priceStore.storePrices("bitfinex", bitFinexPrices, true);
-                // priceStore.storePrices('ftx', ftxPrices, true)
                 priceStore.storePrices("cryptoCom", cryptoComPrices, true);
 
                 // update store prices triggers a price comparison

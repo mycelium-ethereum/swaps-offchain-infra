@@ -81,6 +81,21 @@ jobs:
                   gcp-sa-key: ${{ secrets.KEEPERS_SA_KEY }}
                   project-id: ${{ secrets.KEEPERS_PROJECT_ID }}
 
+    check-liquidator-release:
+        runs-on: ubuntu-latest
+        needs: check-release
+        if: contains(fromJson(needs.check-release.outputs.packages), 'swaps-liquidator')
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+
+            - name: Dry run swaps-liquidator release
+              uses: ./.github/actions/swaps-liquidator
+              with:
+                  dry-run: true
+                  gcp-sa-key: ${{ secrets.KEEPERS_SA_KEY }}
+                  project-id: ${{ secrets.KEEPERS_PROJECT_ID }}
+
     check-order-keeper-release:
         runs-on: ubuntu-latest
         needs: check-release

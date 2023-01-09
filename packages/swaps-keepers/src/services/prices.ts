@@ -37,7 +37,7 @@ const onError = (info: any) => {
 
 // binance client setup
 const binanceClient = new WebsocketClient("binance", {
-    wsUrl: `wss://stream.binance.com/stream`,
+    wsUrl: `wss://stream.binance.us:9443/stream`,
 });
 binanceClient.on("update", (data) => priceEmitter.storePrice("binance", data));
 binanceClient.on("error", onError);
