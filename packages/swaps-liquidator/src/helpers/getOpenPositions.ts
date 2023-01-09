@@ -7,7 +7,7 @@ import { LogDescription } from "ethers/lib/utils";
 import { BigNumber } from "ethers";
 
 const getOpenPositions = async (vault: Vault, provider: Provider) => {
-    const maxProcessBlock = Number(process.env.MAX_PROCESS_BLOCK);
+    const maxProcessBlock = Number(process.env.MAX_PROCESS_BLOCK || 2000);
 
     const positionService: IPositionService = new PositionService();
     const parameterService: IParameterService = new ParameterService();
