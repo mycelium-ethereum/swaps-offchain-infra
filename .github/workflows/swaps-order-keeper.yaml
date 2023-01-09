@@ -1,6 +1,5 @@
 name: Deploy swaps-order-keeper image to cloud registry
 
-
 on:
     push:
         tags:
