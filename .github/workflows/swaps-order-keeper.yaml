@@ -1,11 +1,10 @@
 name: Deploy swaps-order-keeper image to cloud registry
 
 
-on: [push]
-# on:
-#     push:
-#         tags:
-#             - "swaps-keepers/v*"
+on:
+    push:
+        tags:
+            - "swaps-keepers/v*"
 
 env:
     PROJECT_ID: ${{ secrets.KEEPERS_PROJECT_ID }}
