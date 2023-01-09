@@ -19,7 +19,7 @@ const rateLimitLookup = rateLimits.reduce((total, current) => {
 }, {} as { [key: string]: RateLimiterMemory });
 
 export const rateLimiter =
-    (key: typeof rateLimits[number]["key"]) => (req: Request, res: Response, next: NextFunction) => {
+    (key: (typeof rateLimits)[number]["key"]) => (req: Request, res: Response, next: NextFunction) => {
         rateLimitLookup[key]
             .consume(req.ip)
             .then(() => {
