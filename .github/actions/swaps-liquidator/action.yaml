@@ -60,7 +60,7 @@ runs:
 
         # Push the Docker image to Google Container Registry
         - name: Publish docker image
-          if: ${{ !inputs.dry-run }}
+          # if: ${{ !inputs.dry-run }}
           run: |-
               docker push "gcr.io/${{ inputs.project-id }}/swaps-liquidator:$GITHUB_SHA"
           shell: bash
