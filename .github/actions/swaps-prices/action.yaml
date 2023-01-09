@@ -84,7 +84,7 @@ runs:
 
         # Deploy sample image to the GKE cluster
         - name: Rollout deployment
-          if: ${{ !inputs.dry-run }}
+          if: ${{ inputs.dry-run }} == false
           run: |-
               kubectl rollout status deployment/swaps-prices
               kubectl get services -o wide
