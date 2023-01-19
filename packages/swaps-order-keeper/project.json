@@ -54,6 +54,14 @@
                 "jestConfig": "packages/swaps-order-keeper/jest.config.ts",
                 "passWithNoTests": true
             }
+        },
+        "dev": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    "TS_NODE_PROJECT=tsconfig.base.json ts-node-dev -r tsconfig-paths/register packages/swaps-order-keeper/src/main.ts"
+                ]
+            }
         }
     },
     "tags": []

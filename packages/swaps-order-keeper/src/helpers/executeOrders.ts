@@ -49,6 +49,10 @@ async function executeOrderBatch(orders: OrderList, signer: ethers.Signer) {
                 incOrderIndices.push(order.orderIndex);
             } catch (err) {
                 // The order will not execute, don't include it in the batch
+                const revertReason = extractRevertReason(err);
+                console.log(
+                    `Skipping IncreaseOrder #${order.orderIndex} for ${order.account} due to the following error: "${revertReason}"`
+                );
             }
         })
     );
@@ -63,6 +67,10 @@ async function executeOrderBatch(orders: OrderList, signer: ethers.Signer) {
                 decOrderIndices.push(order.orderIndex);
             } catch (err) {
                 // The order will not execute, don't include it in the batch
+                const revertReason = extractRevertReason(err);
+                console.log(
+                    `Skipping DecreaseOrder #${order.orderIndex} for ${order.account} due to the following error: "${revertReason}"`
+                );
             }
         })
     );
@@ -77,6 +85,10 @@ async function executeOrderBatch(orders: OrderList, signer: ethers.Signer) {
                 swapOrderIndices.push(order.orderIndex);
             } catch (err) {
                 // The order will not execute, don't include it in the batch
+                const revertReason = extractRevertReason(err);
+                console.log(
+                    `Skipping SwapOrder #${order.orderIndex} for ${order.account} due to the following error: "${revertReason}"`
+                );
             }
         })
     );
@@ -166,4 +178,12 @@ function shouldBeDeleted(ev: ethers.Event): boolean {
         return true;
     }
     return false;
+}
+
+function extractRevertReason(err: Error): string {
+    const reasonStr = err.message.match(/reason="[^"]*"/);
+    if (reasonStr) {
+        return reasonStr[0].replace("reason=", "").replace(/"/g, "");
+    }
+    return "";
 }
