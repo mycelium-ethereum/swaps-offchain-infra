@@ -3,7 +3,7 @@ name: Deploy swaps-liquidator image to cloud registry
 on:
     push:
         tags:
-            - "swaps-keepers/v*"
+            - "swaps-liquidator/v*"
 
 env:
     PROJECT_ID: ${{ secrets.KEEPERS_PROJECT_ID }}
