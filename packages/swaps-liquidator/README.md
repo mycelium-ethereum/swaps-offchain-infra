@@ -18,3 +18,8 @@ To setup the environment, copy the `env.example` file to `.env` and set the vari
 | DB_URL                                | The URL to access the MongoDB database for storing the keeper data.                                                                                                                                      |
 | IS_PAUSED                             | Boolean. If true, will pause the keeper.                                                                                                                                                                 |
 
+## Running the Keeper
+
+```
+yarn dev:liquidator
+```
