@@ -5,6 +5,8 @@
     "scripts": {
         "dev:keepers": "npx nx run swaps-keepers:dev",
         "dev:prices": "npx nx run swaps-prices:dev",
+        "dev:order-keeper": "npx nx run swaps-order-keeper:dev",
+        "dev:liquidator": "npx nx run swaps-liquidator:dev",
         "build": "npx nx affected --target=build --all",
         "test": "npx nx affected --target=test --all",
         "lint": "npx nx affected --target=lint --all",

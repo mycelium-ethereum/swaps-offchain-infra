@@ -53,6 +53,14 @@
                 "jestConfig": "packages/swaps-liquidator/jest.config.ts",
                 "passWithNoTests": true
             }
+        },
+        "dev": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    "TS_NODE_PROJECT=tsconfig.base.json ts-node-dev -r tsconfig-paths/register packages/swaps-liquidator/src/main.ts"
+                ]
+            }
         }
     },
     "tags": []

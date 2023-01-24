@@ -42,3 +42,22 @@ A seperate pricing service which uses the same websockets as the priceKeepers, s
 
 To run this in development mode run
 `yarn dev:prices`
+
+## [@mycelium-ethereum/swaps-order-keeper](packages/swaps-order-keeper)
+
+Keeper to track orders and execute them when conditions are met
+
+To run this in development mode run
+`yarn dev:order-keeper`
+
+## [@mycelium-ethereum/swaps-liquidator](packages/swaps-liquidator)
+
+A keeper to liquidate positions when they are undercollateralised
+
+To run this in development mode run
+`yarn dev:liquidator`
+
+
+# Deploying to Google Container Registry
+
+To deploy to GCR, simply create a git tag with the following structure `[package-name]/v[version]` eg. `swaps-keepers/v1.0.0`. This will trigger a CI build which will build and push the docker image of the `swaps-keepers` package to GCR.
