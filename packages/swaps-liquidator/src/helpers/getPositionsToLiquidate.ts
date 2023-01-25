@@ -10,12 +10,12 @@ const getPositionsToLiquidate = async (
     positionManager: PositionManager,
     openPositions: IPositionSchema[]
 ) => {
-    const maxLeverage = await vault.maxLeverage();
     const positionsOverMaxLeverage: IPositionSchema[] = [];
+    const maxLeverageBps = await vault.maxLeverage();
     await Promise.all(
         openPositions.map(async (position) => {
             const size = BigNumber.from(position.size);
-            const liquidationMargin = size.mul(BASIS_POINTS_DIVISOR).div(maxLeverage);
+            const liquidationMargin = size.mul(BASIS_POINTS_DIVISOR).div(maxLeverageBps);
 
             const price = await getTokenPrice(position.indexToken, position.isLong, vault);
             const collateral = BigNumber.from(position.collateralAmount);
