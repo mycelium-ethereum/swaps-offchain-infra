@@ -3,9 +3,6 @@ import { PositionManager, Vault } from "@mycelium-ethereum/perpetual-swaps-contr
 import { BigNumber } from "ethers";
 import { getCumulativeFundingRate, getLiquidationFee, getMarginFeeBps, getTokenPrice } from "./cachedGetters";
 
-const MAX_LEVERAGE_BPS = process.env.MAX_LEVERAGE_BPS
-    ? BigNumber.from(process.env.MAX_LEVERAGE_BPS)
-    : BigNumber.from(500000);
 const BASIS_POINTS_DIVISOR = 10000;
 
 const getPositionsToLiquidate = async (
@@ -14,10 +11,11 @@ const getPositionsToLiquidate = async (
     openPositions: IPositionSchema[]
 ) => {
     const positionsOverMaxLeverage: IPositionSchema[] = [];
+    const maxLeverageBps = await vault.maxLeverage();
     await Promise.all(
         openPositions.map(async (position) => {
             const size = BigNumber.from(position.size);
-            const liquidationMargin = size.mul(BASIS_POINTS_DIVISOR).div(MAX_LEVERAGE_BPS);
+            const liquidationMargin = size.mul(BASIS_POINTS_DIVISOR).div(maxLeverageBps);
 
             const price = await getTokenPrice(position.indexToken, position.isLong, vault);
             const collateral = BigNumber.from(position.collateralAmount);
