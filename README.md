@@ -57,7 +57,6 @@ A keeper to liquidate positions when they are undercollateralised
 To run this in development mode run
 `yarn dev:liquidator`
 
-
 # Deploying to Google Container Registry
 
 To deploy to GCR, simply create a git tag with the following structure `[package-name]/v[version]` eg. `swaps-keepers/v1.0.0`. This will trigger a CI build which will build and push the docker image of the `swaps-keepers` package to GCR.
